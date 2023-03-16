@@ -15,7 +15,7 @@ function RootLayout() {
         <AuthProvider>
           <Outlet />
           <Notifications />
-          <ReactQueryDevtools />
+          <ReactQueryDevtools position="bottom-right" />
         </AuthProvider>
       </QueryClientProvider>
       <NavigationProgress />

@@ -31,11 +31,11 @@ function AuthProvider(props: AuthProviderProps) {
     setIsLoading(false);
   }, []);
 
-  if (isLoading) {
-    startNavigationProgress();
-  } else {
-    completeNavigationProgress();
-  }
+  // if (isLoading) {
+  //   startNavigationProgress();
+  // } else {
+  //   completeNavigationProgress();
+  // }
 
   const value: AuthContextType = {
     user,

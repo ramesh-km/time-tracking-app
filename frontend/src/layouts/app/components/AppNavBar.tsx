@@ -4,29 +4,20 @@ import {
   createStyles,
   Navbar,
   Group,
-  Code,
   getStylesRef,
   rem,
   useMantineTheme,
   Text,
+  ActionIcon,
 } from "@mantine/core";
 import {
-  IconBellRinging,
-  IconFingerprint,
-  IconKey,
   IconSettings,
-  Icon2fa,
-  IconDatabaseImport,
-  IconReceipt2,
-  IconSwitchHorizontal,
   IconLogout,
-  IconHourglassFilled,
   IconHourglass,
   IconReport,
   IconReportAnalytics,
-  IconBadgeFilled,
-  IconBadge,
   IconTag,
+  IconSun,
 } from "@tabler/icons-react";
 import { FaStopwatch } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -123,8 +114,8 @@ const data = [
     label: "Insights",
     icon: IconReportAnalytics,
   },
-  { link: "", label: "Tags", icon: IconTag },
-  { link: "", label: "Settings", icon: IconSettings },
+  { link: "/tags", label: "Tags", icon: IconTag },
+  { link: "/settings", label: "Settings", icon: IconSettings },
 ];
 
 function AppNavbar() {
@@ -169,6 +160,14 @@ function AppNavbar() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
+        <a
+          href="#"
+          className={classes.link}
+          onClick={(event) => event.preventDefault()}
+        >
+          <IconSun className={classes.linkIcon} stroke={1.5} />
+          <span>Theme</span>
+        </a>
         <a
           href="#"
           className={classes.link}
