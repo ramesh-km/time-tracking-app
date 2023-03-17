@@ -21,6 +21,12 @@ import {
   IconPlayerPlay,
   IconTrash,
 } from "@tabler/icons-react";
+import { getTags } from "../../lib/api/tags";
+import queryClient from "../../lib/query-client";
+import queryKeys from "../../lib/query-keys";
+import TableHeader from "./components/TableHeader";
+import TableRow from "./components/TableRow";
+import TimerHistoryTable from "./components/TimerHIstoryTable";
 
 const data = [
   { value: "react", label: "React" },
@@ -31,6 +37,15 @@ const data = [
   { value: "next", label: "Next.js" },
   { value: "blitz", label: "Blitz.js" },
 ];
+
+export async function loader() {
+  const tagsQuery = {
+    queryKey: [queryKeys.tags],
+    queryFn: getTags,
+  } as const;
+
+  return await queryClient.ensureQueryData(tagsQuery);
+}
 
 export function Component() {
   const isTimerOn = true;
@@ -66,117 +81,10 @@ export function Component() {
         </Grid.Col>
       </Grid>
 
-      <Stack spacing={"xl"}>
-        <Stack mt={"xl"} spacing="sm">
-          <Text fw={"bold"}>Today</Text>
-          <Table>
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Duration</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Task 1</td>
-                <td>10:00 AM</td>
-                <td>10:30 AM</td>
-                <td>
-                  <Badge>00:30:00</Badge>
-                </td>
-                <td>
-                  <Group>
-                    <ActionIcon>
-                      <IconPlayerPause />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconEdit />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconTrash />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Stack>
-
-        <Stack mt={"xl"} spacing="sm">
-          <Text fw={"bold"}>Yesterday</Text>
-          <Table>
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Duration</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Task 1</td>
-                <td>10:00 AM</td>
-                <td>10:30 AM</td>
-                <td>30 minutes</td>
-                <td>
-                  <Group>
-                    <ActionIcon>
-                      <IconPlayerPause />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconEdit />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconTrash />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Stack>
-
-        <Stack mt={"xl"} spacing="sm">
-          <Text fw={"bold"}>Day before yesterday</Text>
-          <Table>
-            <thead>
-              <tr>
-                <th>Task</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Duration</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Task 1</td>
-                <td>10:00 AM</td>
-                <td>10:30 AM</td>
-                <td>30 minutes</td>
-                <td>
-                  <Group>
-                    <ActionIcon>
-                      <IconPlayerPause />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconEdit />
-                    </ActionIcon>
-                    <ActionIcon>
-                      <IconTrash />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            </tbody>
-          </Table>
-        </Stack>
-      </Stack>
+      <TimerHistoryTable />
+      <TimerHistoryTable />
+      <TimerHistoryTable />
+      <TimerHistoryTable />
     </Stack>
   );
 }
