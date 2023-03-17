@@ -6,5 +6,5 @@ export const AuthContext = createContext<AuthContextType>({
   login: () => void 0,
   logout: () => void 0,
   register: () => void 0,
-  isLoading: true,
+  isLoading: false,
 });

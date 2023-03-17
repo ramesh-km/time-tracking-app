@@ -15,9 +15,9 @@ function AuthProvider(props: AuthProviderProps) {
   const [user, setUser] = useLocalStorage<User | null>({
     key: "auth-user",
     defaultValue: null,
-    getInitialValueInEffect: true,
+    getInitialValueInEffect: false
   });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const login = (user: User) => {
     setUser(user);
@@ -26,10 +26,6 @@ function AuthProvider(props: AuthProviderProps) {
   const logout = () => {
     setUser(null);
   };
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
 
   // if (isLoading) {
   //   startNavigationProgress();

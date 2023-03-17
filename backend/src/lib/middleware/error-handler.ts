@@ -1,4 +1,4 @@
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+import { Prisma } from "@prisma/client";
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { isHttpError } from "http-errors";
@@ -13,7 +13,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     return;
   }
 
-  if (err instanceof PrismaClientKnownRequestError) {
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === "P2002") {
       res.status(409).json({
         message: "A resource with that value already exists",

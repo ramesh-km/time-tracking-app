@@ -14,7 +14,7 @@ export async function comparePasswords(password: string, passwordHash: string) {
   return passwordsMatch;
 }
 
-export async function getSafeUser(user: User) {
+export function getSafeUser(user: User) {
   return {
     id: user.id,
     email: user.email,
