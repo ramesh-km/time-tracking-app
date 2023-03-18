@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { z } from "zod";
-import { PasswordResetFormData } from "../types/auth";
+import { PasswordResetFormData } from "../types/users";
 
 function ResetPasswordPage() {
   const {

@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { registerSchema } from "../../lib/zod-schemas";
-import { RegisterFormData } from "../../types/auth";
+import { RegisterFormData } from "../../types/users";
 
 export function Component() {
   const {

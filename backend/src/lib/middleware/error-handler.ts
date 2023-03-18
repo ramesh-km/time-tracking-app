@@ -5,6 +5,13 @@ import { isHttpError } from "http-errors";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err.name === "UnauthorizedError") {
+    res.status(401).json({
+      message: "Unauthorized",
+    });
+    return;
+  }
+
   if (err instanceof ZodError) {
     res.status(400).json({
       message: "Invalid request body",
@@ -42,6 +49,5 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message: "Internal server error",
   });
 };
-
 
 export default errorHandler;

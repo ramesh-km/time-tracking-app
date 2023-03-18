@@ -11,11 +11,11 @@ import userRouter from "./modules/user/router";
 
 const app = express();
 
-app.use(authenticate());
-app.use(cors());
 app.use(morgan("dev"));
+app.use(cors());
+app.use(authenticate());
 app.use(helmet());
-
+app.use(express.json());
 
 // Register routes
 app.use('/api/v1/tag', tagsRouter);

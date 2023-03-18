@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { registerSchema } from "../lib/zod-schemas";
-import { RegisterFormData } from "../types/auth";
+import { RegisterFormData } from "../types/users";
 import {
   Anchor,
   Box,
@@ -12,8 +12,14 @@ import {
   Title,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import {registerUser as registerUserApi} from "../lib/api/users";
+import { mutationKeys } from "../lib/react-query-keys";
+import useAuth from "../hooks/useAuth";
+import useAuthCheck from "../hooks/useAuthCheck";
 
 function RegisterPage() {
+  useAuthCheck();
   const {
     register,
     handleSubmit,
@@ -22,7 +28,18 @@ function RegisterPage() {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterFormData) => console.log(data);
+  const { registerUser } = useAuth();
+  const mutation = useMutation({
+    mutationKey: [mutationKeys.register],
+    mutationFn: registerUserApi,
+    onSuccess: (data) => {
+      registerUser(data);
+    },
+  });
+
+  const onSubmit = (data: RegisterFormData) => {
+    mutation.mutate(data);
+  };
 
   return (
     <Box component="form" w={"100%"} onSubmit={handleSubmit(onSubmit)}>

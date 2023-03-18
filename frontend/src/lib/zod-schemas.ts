@@ -10,3 +10,8 @@ export const registerSchema = z
     name: z.string().min(2, "Name should be at least 2 characters"),
   })
   .merge(loginSchema);
+
+export const apiErrorSchema = z.object({
+  message: z.string(),
+  error: z.any().optional(),
+});

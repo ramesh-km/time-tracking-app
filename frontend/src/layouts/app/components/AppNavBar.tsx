@@ -9,6 +9,10 @@ import {
   useMantineTheme,
   Text,
   ActionIcon,
+  UnstyledButton,
+  useMantineColorScheme,
+  Code,
+  Kbd,
 } from "@mantine/core";
 import {
   IconSettings,
@@ -18,10 +22,12 @@ import {
   IconReportAnalytics,
   IconTag,
   IconSun,
+  IconMoonStars,
 } from "@tabler/icons-react";
 import { FaStopwatch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDocumentTitle } from "@mantine/hooks";
+import useAuth from "../../../hooks/useAuth";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -119,6 +125,7 @@ const data = [
 ];
 
 function AppNavbar() {
+  const { logout, user } = useAuth();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState("Billing");
   useDocumentTitle(`Time Tracker | ${active}`);
@@ -140,6 +147,8 @@ function AppNavbar() {
   ));
 
   const theme = useMantineTheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === "dark";
 
   return (
     <Navbar width={{ sm: 300 }} p="md" className={classes.navbar}>
@@ -160,22 +169,22 @@ function AppNavbar() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <a
-          href="#"
+        <UnstyledButton
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          w="100%"
+          onClick={() => toggleColorScheme()}
         >
-          <IconSun className={classes.linkIcon} stroke={1.5} />
-          <span>Theme</span>
-        </a>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
+          {dark ? (
+            <IconSun className={classes.linkIcon} stroke={1.5} />
+          ) : (
+            <IconMoonStars className={classes.linkIcon} stroke={1.5} />
+          )}
+          Theme
+        </UnstyledButton>
+        <UnstyledButton className={classes.link} w="100%" onClick={logout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
+          Logout
+        </UnstyledButton>
       </Navbar.Section>
     </Navbar>
   );

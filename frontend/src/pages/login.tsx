@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { loginSchema } from "../lib/zod-schemas";
-import { LoginFormData } from "../types/auth";
+import { LoginFormData } from "../types/users";
 import {
   Anchor,
   Box,
@@ -12,8 +12,14 @@ import {
   Title,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { mutationKeys } from "../lib/react-query-keys";
+import useAuthCheck from "../hooks/useAuthCheck";
+import { loginUser } from "../lib/api/users";
+import useAuth from "../hooks/useAuth";
 
 function LoginPage() {
+  useAuthCheck();
   const {
     register,
     handleSubmit,
@@ -22,7 +28,19 @@ function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => console.log(data);
+  const { login } = useAuth();
+
+  const mutation = useMutation({
+    mutationKey: [mutationKeys.login],
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      login(data);
+    },
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    mutation.mutate(data);
+  };
 
   return (
     <Box component="form" w={"100%"} onSubmit={handleSubmit(onSubmit)}>

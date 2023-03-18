@@ -20,7 +20,7 @@ const registerUserHandler: RequestHandler = async (req, res, next) => {
     return;
   }
 
-  res.json({ user: safeUser, token });
+  res.json({ ...safeUser, token });
 };
 
 export default registerUserHandler;

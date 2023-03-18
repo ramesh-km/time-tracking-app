@@ -23,7 +23,7 @@ import {
 } from "@tabler/icons-react";
 import { getTags } from "../../lib/api/tags";
 import queryClient from "../../lib/query-client";
-import queryKeys from "../../lib/query-keys";
+import { queryKeys } from "../../lib/react-query-keys";
 import TableHeader from "./components/TableHeader";
 import TableRow from "./components/TableRow";
 import TimerHistoryTable from "./components/TimerHIstoryTable";
@@ -38,14 +38,14 @@ const data = [
   { value: "blitz", label: "Blitz.js" },
 ];
 
-export async function loader() {
-  const tagsQuery = {
-    queryKey: [queryKeys.tags],
-    queryFn: getTags,
-  } as const;
+// export async function loader() {
+//   const tagsQuery = {
+//     queryKey: [queryKeys.tags],
+//     queryFn: getTags,
+//   } as const;
 
-  return await queryClient.ensureQueryData(tagsQuery);
-}
+//   return await queryClient.ensureQueryData(tagsQuery);
+// }
 
 export function Component() {
   const isTimerOn = true;

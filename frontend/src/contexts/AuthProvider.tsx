@@ -4,7 +4,8 @@ import {
   startNavigationProgress,
 } from "@mantine/nprogress";
 import { useEffect, useState } from "react";
-import { AuthContextType, User } from "../types/auth";
+import { storageKeys } from "../lib/storage-keys";
+import { AuthContextType, User } from "../types/users";
 import { AuthContext } from "./AuthContext";
 
 type AuthProviderProps = {
@@ -13,11 +14,11 @@ type AuthProviderProps = {
 
 function AuthProvider(props: AuthProviderProps) {
   const [user, setUser] = useLocalStorage<User | null>({
-    key: "auth-user",
+    key: storageKeys.authUser,
     defaultValue: null,
-    getInitialValueInEffect: false
+    getInitialValueInEffect: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(true);
 
   const login = (user: User) => {
     setUser(user);
@@ -35,9 +36,9 @@ function AuthProvider(props: AuthProviderProps) {
 
   const value: AuthContextType = {
     user,
-    isLoading,
+    // isLoading,
     login,
-    register: login,
+    registerUser: login,
     logout,
   };
 
