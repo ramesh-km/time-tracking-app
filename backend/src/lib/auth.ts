@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { PasswordResetTicket, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SafeUser } from "../types/user";
 import jwt from "jsonwebtoken";
@@ -6,6 +6,7 @@ import config from "./config";
 import prisma from "./prisma";
 import { getUuid } from "./utils";
 import { getEmailHtml, sendEmail } from "./emails";
+import { createBug } from "./issue-tracker";
 
 export async function hashPassword(password: string) {
   const passwordHash = await bcrypt.hash(password, 10);
@@ -47,7 +48,7 @@ export async function createPasswordResetTicket(email: string) {
 
   const token = getUuid();
 
-  let ticket;
+  let ticket: PasswordResetTicket;
 
   try {
     ticket = await prisma.passwordResetTicket.create({
@@ -76,6 +77,19 @@ export async function createPasswordResetTicket(email: string) {
     });
     await sendEmail(user.email, "Reset your password", html);
   } catch (error) {
+    // Delete the ticket if the email could not be sent
+    await prisma.passwordResetTicket
+      .delete({
+        where: {
+          id: ticket.id,
+        },
+      })
+      .catch((error) =>
+        createBug(
+          "Could not delete password reset ticket",
+          JSON.stringify(error) + "\n" + JSON.stringify(ticket)
+        )
+      );
     throw new Error("Could not send password reset email");
   }
 

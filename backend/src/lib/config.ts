@@ -12,6 +12,7 @@ const configSchema = z.object({
   JWT_SECRET: z.string().default("secret"),
   SENDGRID_API_TOKEN: z.string().default(""),
   FRONTEND_URL: z.string().default("http://localhost:70001"),
+  ISSUE_TRACKER_EMAIL: z.string().default("")
 });
 
 const config = configSchema.parse(process.env);

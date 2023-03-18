@@ -9,7 +9,6 @@ const http = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-
 // Request interceptor
 http.interceptors.request.use(
   (config) => {
@@ -25,7 +24,6 @@ http.interceptors.request.use(
   }
 );
 
-
 // Response interceptor
 http.interceptors.response.use(
   (response) => {
@@ -39,13 +37,13 @@ http.interceptors.response.use(
       window.location.pathname = "/login";
     }
 
-    // If the user is not connected to the internet or the server is down, show a notification
-    if (isAxiosError(error) && error.code === "ERR_NETWORK") {
-      notifications.show({
-        title: "Network error",
-        message: "Could not connect to the server",
-      });
-    }
+    // // If the user is not connected to the internet or the server is down, show a notification
+    // if (isAxiosError(error) && error.code === "ERR_NETWORK") {
+    //   notifications.show({
+    //     title: "Network error",
+    //     message: "Could not connect to the server",
+    //   });
+    // }
 
     return Promise.reject(error);
   }
