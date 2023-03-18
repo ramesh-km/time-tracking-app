@@ -32,3 +32,10 @@ model TimeEntry {
   userId Int
   tags   Tag[]
 }
+
+model PasswordResetTicket {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  token     String   @unique
+  userId    Int
+}

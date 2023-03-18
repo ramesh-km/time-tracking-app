@@ -12,8 +12,11 @@ import {
 import { Link } from "react-router-dom";
 import { z } from "zod";
 import { ForgotPasswordFormData } from "../types/users";
+import { useMutation } from "@tanstack/react-query";
+import { mutationKeys } from "../lib/react-query-keys";
+import { forgotPassword } from "../lib/api/users";
 
-function ResetPasswordPage() {
+function ForgotPasswordPage() {
   const {
     register,
     handleSubmit,
@@ -26,19 +29,30 @@ function ResetPasswordPage() {
     ),
   });
 
-  const onSubmit = (data: ForgotPasswordFormData) => console.log(data);
+  const mutation = useMutation({
+    mutationKey: [mutationKeys.forgotPassword],
+    mutationFn: forgotPassword,
+  });
+
+  const onSubmit = (data: ForgotPasswordFormData) => {
+    mutation.mutate(data.email);
+  };
 
   return (
     <Box component="form" w={"100%"} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={"xl"}>
-        <Title order={2}>Reset Password</Title>
+        <Title order={2}>
+          Forgot Password
+        </Title>
         <TextInput
           label="Email"
           error={errors.email?.message}
           {...register("email")}
         />
 
-        <Button type="submit">Login</Button>
+        <Button type="submit">
+          Send Reset Password Email
+        </Button>
         <Stack spacing={"sm"}>
           <Text size={"sm"}>
             Go back to{" "}
@@ -52,4 +66,4 @@ function ResetPasswordPage() {
   );
 }
 
-export default ResetPasswordPage;
+export default ForgotPasswordPage;

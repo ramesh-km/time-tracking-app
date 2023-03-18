@@ -11,3 +11,7 @@ export async function loginUser(data: LoginFormData) {
   return res.data;
 }
 
+export async function forgotPassword(email: string) {
+  const res = await http.post("/user/create-password-reset-ticket", { email });
+  return res.data;
+}

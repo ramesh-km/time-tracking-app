@@ -58,7 +58,7 @@ function LoginPage() {
           description={
             <Text size={"sm"}>
               Forgot your password?{" "}
-              <Anchor variant={"link"} component={Link} to="/reset-password">
+              <Anchor variant={"link"} component={Link} to="/forgot-password">
                 Reset
               </Anchor>
             </Text>
