@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import { generateToken, getSafeUser } from "../../../lib/auth";
+import { generateToken, getSafeUser } from "../services";
 import { safePromise } from "../../../lib/utils";
 import userRepository from "../repository";
 

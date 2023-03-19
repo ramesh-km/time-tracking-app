@@ -5,9 +5,9 @@ function validate(
   schema: ZodSchema,
   reqBodyProp: "params" | "query" | "body" = "body"
 ) {
-  return (req: Request, res:Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction) => {
     const zodResult = schema.safeParse(req[reqBodyProp]);
-    
+
     if (!zodResult.success) {
       next(zodResult.error);
       return;

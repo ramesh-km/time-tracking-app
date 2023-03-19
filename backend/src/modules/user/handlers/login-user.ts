@@ -1,10 +1,6 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import {
-  comparePasswords,
-  generateToken,
-  getSafeUser,
-} from "../../../lib/auth";
+import { compareWithHash, generateToken, getSafeUser } from "../services";
 import { safePromise } from "../../../lib/utils";
 import userRepository from "../repository";
 
@@ -21,11 +17,15 @@ const loginUserHandler: RequestHandler = async (req, res, next) => {
 
   // Check password
   const isPasswordValid = await safePromise(
-    comparePasswords(password, user.password),
+    compareWithHash(password, user.password),
     false
   );
 
   if (!isPasswordValid) {
+    console.log(
+      "🚀 ~ file: login-user.ts:29 ~ constloginUserHandler:RequestHandler= ~ isPasswordValid:",
+      isPasswordValid
+    );
     next(createHttpError(401, "Invalid credentials"));
     return;
   }

@@ -6,6 +6,7 @@ import {
   Anchor,
   Box,
   Button,
+  PasswordInput,
   Stack,
   Text,
   TextInput,
@@ -13,7 +14,7 @@ import {
 } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import {registerUser as registerUserApi} from "../lib/api/users";
+import { registerUser as registerUserApi } from "../lib/api/users";
 import { mutationKeys } from "../lib/react-query-keys";
 import useAuth from "../hooks/useAuth";
 import useAuthCheck from "../hooks/useAuthCheck";
@@ -57,13 +58,15 @@ function RegisterPage() {
           error={errors.email?.message}
           {...register("email")}
         />
-        <TextInput
+        <PasswordInput
           label="Password"
           error={errors.password?.message}
           {...register("password")}
         />
 
-        <Button type="submit">Register</Button>
+        <Button type="submit" loading={mutation.isLoading}>
+          Register
+        </Button>
 
         <Stack>
           <Text size={"sm"}>

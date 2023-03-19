@@ -34,17 +34,11 @@ http.interceptors.response.use(
     if ([401, 403].includes(error.response?.status)) {
       console.log("Unauthorized");
       deleteUserFromLocalStorage();
-      window.location.pathname = "/login";
+
+      if (window.location.pathname !== "/login") {
+        window.location.pathname = "/login";
+      }
     }
-
-    // // If the user is not connected to the internet or the server is down, show a notification
-    // if (isAxiosError(error) && error.code === "ERR_NETWORK") {
-    //   notifications.show({
-    //     title: "Network error",
-    //     message: "Could not connect to the server",
-    //   });
-    // }
-
     return Promise.reject(error);
   }
 );

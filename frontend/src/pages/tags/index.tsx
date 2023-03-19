@@ -3,9 +3,7 @@ import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
 
 export function Component() {
   return (
-    <Stack
-    spacing={"xl"}
-    >
+    <Stack spacing={"xl"}>
       {/* Tags table */}
       <Group>
         <Button rightIcon={<IconPlus />}>Create Tag</Button>

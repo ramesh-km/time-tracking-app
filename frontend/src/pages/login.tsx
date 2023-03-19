@@ -6,6 +6,7 @@ import {
   Anchor,
   Box,
   Button,
+  PasswordInput,
   Stack,
   Text,
   TextInput,
@@ -17,6 +18,8 @@ import { mutationKeys } from "../lib/react-query-keys";
 import useAuthCheck from "../hooks/useAuthCheck";
 import { loginUser } from "../lib/api/users";
 import useAuth from "../hooks/useAuth";
+import { showNotification } from "@mantine/notifications";
+import { IconExclamationMark } from "@tabler/icons-react";
 
 function LoginPage() {
   useAuthCheck();
@@ -36,6 +39,15 @@ function LoginPage() {
     onSuccess: (data) => {
       login(data);
     },
+    onError: () => {
+      showNotification({
+        title: "Login Failed",
+        message: "Invalid email or password.",
+        color: "red",
+        icon: <IconExclamationMark />,
+        id: "login-failed",
+      });
+    },
   });
 
   const onSubmit = (data: LoginFormData) => {
@@ -51,7 +63,7 @@ function LoginPage() {
           error={errors.email?.message}
           {...register("email")}
         />
-        <TextInput
+        <PasswordInput
           label="Password"
           error={errors.password?.message}
           {...register("password")}
@@ -59,13 +71,15 @@ function LoginPage() {
             <Text size={"sm"}>
               Forgot your password?{" "}
               <Anchor variant={"link"} component={Link} to="/forgot-password">
-                Reset
+                Reset it.
               </Anchor>
             </Text>
           }
           inputWrapperOrder={["label", "input", "error", "description"]}
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit" loading={mutation.isLoading}>
+          Login
+        </Button>
         <Stack spacing={"sm"}>
           <Text size={"sm"}>
             Don&apos;t have an account?{" "}

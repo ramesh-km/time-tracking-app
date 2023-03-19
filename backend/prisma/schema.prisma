@@ -33,9 +33,17 @@ model TimeEntry {
   tags   Tag[]
 }
 
+// Links are valid for 1 hour from creation time
 model PasswordResetTicket {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  token     String   @unique
+  id        Int                 @id @default(autoincrement())
+  createdAt DateTime            @default(now())
+  token     String              @unique
   userId    Int
+  invalid   InvalidTicketReason @default(NONE)
+}
+
+enum InvalidTicketReason {
+  ALREADY_USED
+  NEWER_TICKET_EXISTS
+  NONE
 }

@@ -1,4 +1,10 @@
-import { LoginFormData, RegisterFormData, User } from "../../types/users";
+import {
+  LoginFormData,
+  RegisterFormData,
+  ResetLinkParams,
+  ResetPasswordFormData,
+  User,
+} from "../../types/users";
 import http from "../http";
 
 export async function registerUser(data: RegisterFormData) {
@@ -13,5 +19,12 @@ export async function loginUser(data: LoginFormData) {
 
 export async function forgotPassword(email: string) {
   const res = await http.post("/user/create-password-reset-ticket", { email });
+  return res.data;
+}
+
+export async function resetPassword(
+  data: ResetPasswordFormData & ResetLinkParams
+) {
+  const res = await http.post("/user/reset-password", data);
   return res.data;
 }

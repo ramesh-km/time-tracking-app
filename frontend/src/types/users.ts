@@ -1,8 +1,15 @@
 import { z } from "zod";
-import { loginSchema, registerSchema } from "../lib/zod-schemas";
+import {
+  loginSchema,
+  registerSchema,
+  resetLinkParamsSchema,
+  resetPasswordSchema,
+} from "../lib/zod-schemas";
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
+export type ResetLinkParams = z.infer<typeof resetLinkParamsSchema>;
 export type ForgotPasswordFormData = {
   email: string;
 };

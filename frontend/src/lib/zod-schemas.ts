@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -14,4 +14,16 @@ export const registerSchema = z
 export const apiErrorSchema = z.object({
   message: z.string(),
   error: z.any().optional(),
+});
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, "Password should be at least 8 characters"),
+});
+
+export const resetLinkParamsSchema = z.object({
+  token: z.string().min(1),
+  id: z
+    .string()
+    .min(1)
+    .transform((id) => parseInt(id, 10)),
 });

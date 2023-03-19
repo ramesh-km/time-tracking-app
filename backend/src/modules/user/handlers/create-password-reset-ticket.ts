@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
-import { createPasswordResetTicket } from "../../../lib/auth";
+import { createPasswordResetTicket } from "../services";
 import { CreatePasswordResetTicketInput } from "../../../types/user";
 
 const handleCreatePasswordResetTicket: RequestHandler = async (

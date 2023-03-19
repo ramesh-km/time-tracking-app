@@ -11,4 +11,3 @@ export const updateTimeEntrySchema = z.object({
   start: z.date(),
   end: z.date(),
 });
-

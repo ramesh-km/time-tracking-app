@@ -18,9 +18,9 @@ app.use(helmet());
 app.use(express.json());
 
 // Register routes
-app.use('/api/v1/tag', tagsRouter);
-app.use('/api/v1/time-entry', timeEntriesRouter);
-app.use('/api/v1/user', userRouter);
+app.use("/api/v1/tag", tagsRouter);
+app.use("/api/v1/time-entry", timeEntriesRouter);
+app.use("/api/v1/user", userRouter);
 
 // Register error handler middleware
 app.use(errorHandler);

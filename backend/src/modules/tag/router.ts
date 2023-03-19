@@ -7,6 +7,4 @@ const router = Router();
 
 router.post("/", validate(createTagSchema), createTagHandler);
 
-
-
 export default router;

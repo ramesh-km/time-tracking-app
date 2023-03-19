@@ -25,11 +25,7 @@ export function Component() {
     <Stack spacing="xl">
       <Group>
         <DatePickerInput type="range" value={value} onChange={setValue} />
-        <Button
-        leftIcon={<IconFileExport />}
-        >
-          Export
-        </Button>
+        <Button leftIcon={<IconFileExport />}>Export</Button>
       </Group>
       <Table>
         <thead>
