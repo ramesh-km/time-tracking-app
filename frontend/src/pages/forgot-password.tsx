@@ -41,7 +41,6 @@ function ForgotPasswordPage() {
         title: "Password Reset Email Sent",
         message: "Check your email for a password reset link.",
         color: "teal",
-        icon: <IconCheck />,
       });
     },
   });

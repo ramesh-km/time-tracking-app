@@ -9,7 +9,7 @@ const loginUserHandler: RequestHandler = async (req, res, next) => {
 
   let user;
   try {
-    user = await userRepository.getUserByEmail(email);
+    user = await userRepository.getByEmail(email);
   } catch (error) {
     next(error);
     return;

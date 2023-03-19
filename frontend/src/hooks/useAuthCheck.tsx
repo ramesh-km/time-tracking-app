@@ -9,17 +9,14 @@ function useAuthCheck() {
   const location = useLocation();
 
   useEffect(() => {
-    if (user) {
+    const publicRoutes = ["/login", "/register"];
+
+    if (user && publicRoutes.includes(location.pathname)) {
       navigate("/");
-      return;
+    } else if (!user && !publicRoutes.includes(location.pathname)) {
+      navigate("/login");
     }
-
-    const routesToSkip = ["/login", "/register"];
-    if (!user && routesToSkip.includes(location.pathname)) {
-      return;
-    }
-
-    navigate("/login");
+    
   }, [user]);
 }
 

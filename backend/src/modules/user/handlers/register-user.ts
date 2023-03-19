@@ -7,7 +7,7 @@ import userRepository from "../repository";
 const registerUserHandler: RequestHandler = async (req, res, next) => {
   let user;
   try {
-    user = await userRepository.createUser(req.body);
+    user = await userRepository.create(req.body);
   } catch (error) {
     next(error);
     return;

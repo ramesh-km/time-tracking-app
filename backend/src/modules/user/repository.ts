@@ -4,7 +4,7 @@ import { safePromise } from "../../lib/utils";
 import { RegisterUserInput } from "../../types/user";
 import { Prisma } from "@prisma/client";
 
-async function createUser(data: RegisterUserInput) {
+async function create(data: RegisterUserInput) {
   const password = await safePromise(hashText(data.password));
   if (!password) {
     throw new Error("Could not hash password");
@@ -19,7 +19,7 @@ async function createUser(data: RegisterUserInput) {
   return user;
 }
 
-async function getUserByEmail(email: string) {
+async function getByEmail(email: string) {
   const user = await prisma.user.findUniqueOrThrow({
     where: {
       email,
@@ -28,7 +28,7 @@ async function getUserByEmail(email: string) {
   return user;
 }
 
-async function updateUser(id: number, data: Prisma.UserUpdateInput) {
+async function update(id: number, data: Prisma.UserUpdateInput) {
   const user = await prisma.user.update({
     where: {
       id,
@@ -39,9 +39,9 @@ async function updateUser(id: number, data: Prisma.UserUpdateInput) {
 }
 
 const userRepository = {
-  createUser,
-  getUserByEmail,
-  updateUser,
+   create,
+   getByEmail,
+   update,
 };
 
 export default userRepository;

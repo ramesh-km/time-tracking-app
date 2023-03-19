@@ -1,5 +1,5 @@
 export const queryKeys = {
-  tags: "tags",
+  allTagsWithCount: "allTagsWithCount",
 };
 
 export const mutationKeys = {
@@ -11,7 +11,6 @@ export const mutationKeys = {
 
   // Tags
   createTag: "createTag",
-  updateTag: "updateTag",
   deleteTag: "deleteTag",
 
   // Time entries

@@ -27,3 +27,7 @@ export const resetLinkParamsSchema = z.object({
     .min(1)
     .transform((id) => parseInt(id, 10)),
 });
+
+export const createTagSchema = z.object({
+  name: z.string().min(1).max(50),
+});

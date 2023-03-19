@@ -43,7 +43,6 @@ function ResetPasswordPage() {
         title: "Password Reset",
         message: "Your password has been reset.",
         color: "teal",
-        icon: <IconCheck />,
       });
       navigate("/login");
     },

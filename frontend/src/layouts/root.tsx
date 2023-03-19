@@ -13,6 +13,7 @@ import AuthProvider from "../contexts/AuthProvider";
 import { NavigationProgress } from "@mantine/nprogress";
 import OfflineAlert from "../components/OfflineAlert";
 import { useState } from "react";
+import { ModalsProvider } from "@mantine/modals";
 
 function RootLayout() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
@@ -30,12 +31,18 @@ function RootLayout() {
         theme={{ ...theme, colorScheme }}
       >
         <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <OfflineAlert />
-            <Outlet />
-            <Notifications position="top-right" />
-            <ReactQueryDevtools position="bottom-right" />
-          </AuthProvider>
+          <ModalsProvider
+            modalProps={{
+              centered: true,
+            }}
+          >
+            <AuthProvider>
+              <OfflineAlert />
+              <Outlet />
+              <Notifications position="top-right" />
+              <ReactQueryDevtools position="bottom-right" />
+            </AuthProvider>
+          </ModalsProvider>
         </QueryClientProvider>
         <NavigationProgress />
       </MantineProvider>

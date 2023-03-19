@@ -25,7 +25,7 @@ const resetPasswordHandler: RequestHandler = async (req, res, next) => {
 
   // Update the user's password
   try {
-    await userRepository.updateUser(user.id, {
+    await userRepository.update(user.id, {
       password: await hashText(password), // Hash the password
     });
   } catch (error) {

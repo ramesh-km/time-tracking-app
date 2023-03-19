@@ -1,36 +1,53 @@
 import { ActionIcon, Button, Group, Stack, Table } from "@mantine/core";
 import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import queryClient from "../../lib/query-client";
+import { getAllTagsWithCount } from "../../lib/api/tags";
+import { queryKeys } from "../../lib/react-query-keys";
+import { useLoaderData } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import TagsTableHeader from "./components/TagsTableHeader";
+import { modals } from "@mantine/modals";
+import CreateTag from "./components/CreateTag";
+import TagsTableRow from "./components/TagsTableRow";
+
+const tagsQuery = {
+  queryKey: [queryKeys.allTagsWithCount],
+  queryFn: getAllTagsWithCount,
+};
+
+export async function loader() {
+  const tags = await queryClient.ensureQueryData(tagsQuery);
+
+  return tags;
+}
 
 export function Component() {
+  const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const { data: tags } = useQuery({
+    ...tagsQuery,
+    initialData,
+  });
+
+  const handleCreateTag = () => {
+    modals.open({
+      title: "Create Tag",
+      children: <CreateTag />,
+    });
+  };
+
   return (
     <Stack spacing={"xl"}>
-      {/* Tags table */}
       <Group>
-        <Button rightIcon={<IconPlus />}>Create Tag</Button>
+        <Button onClick={handleCreateTag} rightIcon={<IconPlus />}>
+          Create Tag
+        </Button>
       </Group>
       <Table>
-        <thead>
-          <tr>
-            <th>Tag</th>
-            <th>Count</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <TagsTableHeader />
         <tbody>
-          <tr>
-            <td>Tag 1</td>
-            <td>10</td>
-            <td>
-              <Group>
-                <ActionIcon>
-                  <IconEdit />
-                </ActionIcon>
-                <ActionIcon>
-                  <IconTrash />
-                </ActionIcon>
-              </Group>
-            </td>
-          </tr>
+          {tags.map((tag) => (
+            <TagsTableRow key={tag.name} tag={tag} />
+          ))}
         </tbody>
       </Table>
     </Stack>
