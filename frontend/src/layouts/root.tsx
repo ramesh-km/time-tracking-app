@@ -12,11 +12,14 @@ import { Notifications } from "@mantine/notifications";
 import AuthProvider from "../contexts/AuthProvider";
 import { NavigationProgress } from "@mantine/nprogress";
 import OfflineAlert from "../components/OfflineAlert";
-import { useState } from "react";
 import { ModalsProvider } from "@mantine/modals";
+import { useLocalStorage } from "@mantine/hooks";
 
 function RootLayout() {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    defaultValue: "light",
+    key: "user-color-scheme",
+  });
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
 

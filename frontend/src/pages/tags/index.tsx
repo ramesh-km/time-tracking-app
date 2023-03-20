@@ -1,5 +1,5 @@
-import { ActionIcon, Button, Group, Stack, Table } from "@mantine/core";
-import { IconEdit, IconPlus, IconTrash } from "@tabler/icons-react";
+import { Button, Group, Stack, Table } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
 import queryClient from "../../lib/query-client";
 import { getAllTagsWithCount } from "../../lib/api/tags";
 import { queryKeys } from "../../lib/react-query-keys";

@@ -1,5 +1,6 @@
 export const queryKeys = {
   allTagsWithCount: "allTagsWithCount",
+  allTags: "allTags",
 };
 
 export const mutationKeys = {

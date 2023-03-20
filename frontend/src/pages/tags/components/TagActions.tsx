@@ -1,6 +1,6 @@
 import { Group, ActionIcon } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
-import { IconCheck, IconTrash } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTag } from "../../../lib/api/tags";
 import { mutationKeys, queryKeys } from "../../../lib/react-query-keys";

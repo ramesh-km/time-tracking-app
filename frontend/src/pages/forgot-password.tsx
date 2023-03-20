@@ -10,14 +10,13 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import { ForgotPasswordFormData } from "../types/users";
 import { useMutation } from "@tanstack/react-query";
 import { mutationKeys } from "../lib/react-query-keys";
 import { forgotPassword } from "../lib/api/users";
 import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
 
 function ForgotPasswordPage() {
   const {
@@ -32,7 +31,6 @@ function ForgotPasswordPage() {
     ),
   });
 
-  const navigate = useNavigate();
   const mutation = useMutation({
     mutationKey: [mutationKeys.forgotPassword],
     mutationFn: forgotPassword,

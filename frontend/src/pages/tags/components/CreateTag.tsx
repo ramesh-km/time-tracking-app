@@ -58,9 +58,9 @@ function CreateTag() {
           error={errors.name?.message}
         />
         <Group position="right">
-          <Button type="submit"
-          loading={mutation.isLoading}
-          >Create</Button>
+          <Button type="submit" loading={mutation.isLoading}>
+            Create
+          </Button>
           <Button variant="outline" onClick={closeModal} type="button">
             Cancel
           </Button>

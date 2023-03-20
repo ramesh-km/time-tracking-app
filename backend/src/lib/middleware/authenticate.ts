@@ -6,6 +6,7 @@ export function authenticate() {
   return expressjwt({
     secret: config.JWT_SECRET,
     algorithms: ["HS256"],
+    requestProperty: "user",
   }).unless({
     path: publicRoutes,
   });

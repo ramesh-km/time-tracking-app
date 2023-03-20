@@ -24,9 +24,9 @@ model Tag {
 }
 
 model TimeEntry {
-  id     Int      @id @default(autoincrement())
-  start  DateTime @default(now())
-  end    DateTime
+  id     Int       @id @default(autoincrement())
+  start  DateTime  @default(now())
+  end    DateTime?
   note   String
   userId Int
   tags   Tag[]

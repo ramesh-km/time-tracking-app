@@ -1,53 +1,69 @@
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Center,
-  Flex,
-  Grid,
-  Group,
-  MultiSelect,
-  Stack,
-  Table,
-  Text,
-  TextInput,
-} from "@mantine/core";
-import {
-  IconDownload,
-  IconEdit,
-  IconNote,
-  IconPlayerPause,
-  IconPlayerPlay,
-  IconTrash,
-} from "@tabler/icons-react";
-import { getTags } from "../../lib/api/tags";
+import { Button, Grid, MultiSelect, Stack, TextInput } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconNote, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
+import { createTag, getAllTags } from "../../lib/api/tags";
+import { createTimeEntry } from "../../lib/api/time-entries";
 import queryClient from "../../lib/query-client";
-import { queryKeys } from "../../lib/react-query-keys";
-import TableHeader from "./components/TableHeader";
-import TableRow from "./components/TableRow";
+import { mutationKeys, queryKeys } from "../../lib/react-query-keys";
+import TagsSelection from "./components/TagsSelection";
 import TimerHistoryTable from "./components/TimerHIstoryTable";
 
-const data = [
-  { value: "react", label: "React" },
-  { value: "ng", label: "Angular" },
-  { value: "svelte", label: "Svelte" },
-  { value: "vue", label: "Vue" },
-  { value: "riot", label: "Riot" },
-  { value: "next", label: "Next.js" },
-  { value: "blitz", label: "Blitz.js" },
-];
+export async function loader() {
+  const tagsQuery = {
+    queryKey: [queryKeys.allTags],
+    queryFn: getAllTags,
+  } as const;
 
-// export async function loader() {
-//   const tagsQuery = {
-//     queryKey: [queryKeys.tags],
-//     queryFn: getTags,
-//   } as const;
-
-//   return await queryClient.ensureQueryData(tagsQuery);
-// }
+  return await queryClient.ensureQueryData(tagsQuery);
+}
 
 export function Component() {
+  const tagsInitialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const tagsQuery = useQuery({
+    queryKey: [queryKeys.allTags],
+    queryFn: getAllTags,
+    initialData: tagsInitialData,
+  });
+
+  const [tags, setTags] = useState<string[]>([]);
+  const [note, setNote] = useState<string>("");
+
+  const tagsData = tagsQuery.data.map((tag) => ({
+    label: tag.name,
+    value: tag.name,
+  }));
+
+  const handleTagsChange = (value: string[]) => {
+    setTags(value);
+  };
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationKey: [mutationKeys.createTimeEntry],
+    mutationFn: createTimeEntry,
+    onSuccess: () => {
+      notifications.show({
+        title: "Timer started",
+        message: "Time entry has been created",
+        color: "teal",
+      });
+    },
+  });
+
+  const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNote(event.target.value);
+  };
+
+  const handleTimerStart = () => {
+    mutation.mutate({
+      note,
+      tags,
+    });
+  };
+
   const isTimerOn = true;
   return (
     <Stack>
@@ -59,24 +75,20 @@ export function Component() {
             icon={<IconNote />}
             autoFocus
             variant={"default"}
+            onChange={handleNoteChange}
+            value={note}
           />
         </Grid.Col>
         <Grid.Col span={2}>
-          <MultiSelect
-            data={data}
-            // label="Your favorite frameworks/libraries"
-            placeholder="Tags"
-            width={300}
-            searchable
-            clearable
-            creatable
-            getCreateLabel={(query) => `+ Create ${query}`}
-            // onCreate={(query) => {}}
+          <TagsSelection
+            data={tagsData}
+            onChange={handleTagsChange}
+            value={tags}
           />
         </Grid.Col>
         <Grid.Col span={"content"}>
-          <Button>
-            {isTimerOn ? <IconPlayerPause /> : <IconPlayerPlay />}
+          <Button onClick={handleTimerStart} loading={mutation.isLoading}>
+            {isTimerOn ? <IconPlayerPlay /> : <IconPlayerPause />}
           </Button>
         </Grid.Col>
       </Grid>

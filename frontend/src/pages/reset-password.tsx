@@ -5,7 +5,6 @@ import {
   Anchor,
   Box,
   Button,
-  Code,
   PasswordInput,
   Stack,
   Text,
@@ -14,12 +13,11 @@ import {
 import {
   Link,
   useNavigate,
-  useParams,
   useSearchParams,
 } from "react-router-dom";
 import { ResetPasswordFormData } from "../types/users";
 import { resetLinkParamsSchema, resetPasswordSchema } from "../lib/zod-schemas";
-import { IconCheck, IconLinkOff } from "@tabler/icons-react";
+import { IconLinkOff } from "@tabler/icons-react";
 import { useMutation } from "@tanstack/react-query";
 import { mutationKeys } from "../lib/react-query-keys";
 import { resetPassword } from "../lib/api/users";

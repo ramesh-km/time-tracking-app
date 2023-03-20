@@ -29,5 +29,9 @@ export const resetLinkParamsSchema = z.object({
 });
 
 export const createTagSchema = z.object({
-  name: z.string().min(1).max(50),
+  name: z
+    .string()
+    .regex(/^[a-zA-Z0-9_ ]+$/)
+    .min(1)
+    .max(50),
 });

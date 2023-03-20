@@ -1,17 +1,17 @@
 import { RequestHandler } from "express";
-import prisma from "../../../lib/prisma";
 import { CreateTimeEntryInput } from "../../../types/time-entry";
+import timeEntryRepository from "../repository";
 
 const createTimeEntryHandler: RequestHandler = async (req, res, next) => {
-  const { tagId, startTime, endTime } = req.body as CreateTimeEntryInput;
+  const { note, tags } = req.body as CreateTimeEntryInput;
 
+  req.user;
   let timeEntry;
   try {
-    timeEntry = await prisma.timeEntry.create({
-      data: {
-        startTime,
-        endTime,
-      },
+    timeEntry = await timeEntryRepository.create({
+      note,
+      tags,
+      userId: req.user.id,
     });
   } catch (error) {
     next(error);
@@ -19,3 +19,5 @@ const createTimeEntryHandler: RequestHandler = async (req, res, next) => {
 
   res.status(201).json(timeEntry);
 };
+
+export default createTimeEntryHandler;
