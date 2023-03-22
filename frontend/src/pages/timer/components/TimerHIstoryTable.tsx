@@ -18,7 +18,12 @@ function TimerHistoryTable(props: TimerHistoryTableProps) {
             props.group
           )}
         </Text>
-        <Table>
+        <Table
+        striped
+        withBorder
+        withColumnBorders
+        highlightOnHover
+        >
           <TableHeader />
           <tbody>
             {

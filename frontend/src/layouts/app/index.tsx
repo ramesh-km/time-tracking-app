@@ -1,6 +1,5 @@
 import { AppShell } from "@mantine/core";
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAuthCheck from "../../hooks/useAuthCheck";
 import AppHeader from "./components/AppHeader";

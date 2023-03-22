@@ -42,7 +42,7 @@ function RootLayout() {
             <AuthProvider>
               <OfflineAlert />
               <Outlet />
-              <Notifications position="top-right" />
+              <Notifications position="bottom-right" />
               <ReactQueryDevtools position="bottom-right" />
             </AuthProvider>
           </ModalsProvider>

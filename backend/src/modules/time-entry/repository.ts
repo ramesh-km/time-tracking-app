@@ -110,6 +110,15 @@ async function deleteTimeEntry(id: number) {
   });
   return timeEntry;
 }
+async function stop(id: number) {
+  const timeEntry = await prisma.timeEntry.update({
+    where: { id },
+    data: {
+      end: new Date(),
+    }
+  });
+  return timeEntry;
+}
 
 const timeEntryRepository = {
   create,
@@ -117,7 +126,8 @@ const timeEntryRepository = {
   update,
   getTimeEntriesPaginated,
   getAllCurrentWeekEntries,
-  deleteTimeEntry
+  deleteTimeEntry,
+   stop,
 };
 
 export default timeEntryRepository;

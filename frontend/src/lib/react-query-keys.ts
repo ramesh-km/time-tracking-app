@@ -23,4 +23,5 @@ export const mutationKeys = {
   createTimeEntry: "createTimeEntry",
   updateTimeEntry: "updateTimeEntry",
   deleteTimeEntry: "deleteTimeEntry",
+  stopTimeEntry: "stopTimeEntry",
 };

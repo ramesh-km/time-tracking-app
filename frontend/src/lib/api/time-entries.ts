@@ -21,3 +21,8 @@ export async function getAllCurrentWeekEntries() {
 export async function deleteTimeEntry(id: number) {
   await http.delete(`/time-entry/${id}`);
 }
+
+export async function stopTimeEntry(id: number) {
+  const res = await http.put<TimeEntry>(`/time-entry/stop/${id}`);
+  return res.data;
+}

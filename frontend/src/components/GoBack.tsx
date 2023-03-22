@@ -1,13 +1,22 @@
 import { ActionIcon } from "@mantine/core";
-import { IconArrowLeft, IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft } from "@tabler/icons-react";
+import { useNavigate } from "react-router-dom";
 
 type GoBackProps = {
   to?: string;
 };
 
 function GoBack(props: GoBackProps) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (props.to) {
+      navigate(props.to);
+    } else {
+      navigate(-1);
+    }
+  };
   return (
-    <ActionIcon>
+    <ActionIcon onClick={handleClick}>
       <IconChevronLeft />
     </ActionIcon>
   );
