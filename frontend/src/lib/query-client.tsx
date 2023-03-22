@@ -31,6 +31,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       onError: handleError,
+      refetchOnMount: false,
+      // refetchOnWindowFocus: !import.meta.env.DEV,
     },
     mutations: {
       onError: handleError,

@@ -14,8 +14,11 @@ import {
 import { Link } from "react-router-dom";
 import { registerSchema } from "../../lib/zod-schemas";
 import { RegisterFormData } from "../../types/users";
+import { useDocumentTitle } from "@mantine/hooks";
 
 export function Component() {
+  useDocumentTitle("Settings");
+
   const {
     register,
     handleSubmit,

@@ -9,6 +9,7 @@ import {
   Table,
 } from "@mantine/core";
 import { DateInput, DatePickerInput, DatesRangeValue } from "@mantine/dates";
+import { useDocumentTitle } from "@mantine/hooks";
 import { IconEdit, IconFileExport } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -19,6 +20,7 @@ const defaultDates: DatesRangeValue = [
 ];
 
 export function Component() {
+  useDocumentTitle("Reports");
   const [value, setValue] = useState<DatesRangeValue>(defaultDates);
 
   return (

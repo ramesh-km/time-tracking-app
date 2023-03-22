@@ -17,8 +17,11 @@ import { useMutation } from "@tanstack/react-query";
 import { mutationKeys } from "../lib/react-query-keys";
 import { forgotPassword } from "../lib/api/users";
 import { notifications } from "@mantine/notifications";
+import { useDocumentTitle } from "@mantine/hooks";
 
 function ForgotPasswordPage() {
+  useDocumentTitle("Forgot Password");
+
   const {
     register,
     handleSubmit,

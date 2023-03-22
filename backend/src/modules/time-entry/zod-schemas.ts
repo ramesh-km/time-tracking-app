@@ -13,17 +13,18 @@ export const updateTimeEntrySchema = z
   })
   .merge(createTimeEntrySchema);
 
-export const timeEntriesPaginationSchema = z.object({
-  page: z.coerce.number().int().min(0),
+export const getTimeEntriesReportSchema = z.object({
+  page: z.coerce.number().int().min(0).default(0),
   size: z.coerce.number().int().min(1).max(100).default(10),
   // default to current week
-  from: z.coerce.date().optional().default(dayjs().endOf("week").toDate()),
+  from: z.coerce.date().optional().default(dayjs().startOf("week").toDate()),
   to: z.coerce.date().optional().default(dayjs().toDate()),
   tags: z.preprocess(
-    (value) => String(value).split(",").filter(Boolean),
+    (value) => (value ? String(value).split(",").filter(Boolean) : []),
     z.array(z.string().min(1).max(50)).optional().default([])
   ),
-  note: z.string().min(1).max(255).optional().default(""),
+  note: z.string().max(255).optional().default(""),
   sort: z.enum(["start", "end", "note", "tags"]).default("start"),
   direction: z.enum(["asc", "desc"]).default("desc"),
+  
 });

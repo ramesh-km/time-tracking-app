@@ -10,11 +10,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import {
-  Link,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ResetPasswordFormData } from "../types/users";
 import { resetLinkParamsSchema, resetPasswordSchema } from "../lib/zod-schemas";
 import { IconLinkOff } from "@tabler/icons-react";
@@ -22,8 +18,11 @@ import { useMutation } from "@tanstack/react-query";
 import { mutationKeys } from "../lib/react-query-keys";
 import { resetPassword } from "../lib/api/users";
 import { notifications } from "@mantine/notifications";
+import { useDocumentTitle } from "@mantine/hooks";
 
 function ResetPasswordPage() {
+  useDocumentTitle(`Time Tracker | Reset Password`);
+
   const {
     register,
     handleSubmit,

@@ -1,12 +1,15 @@
 import { RequestHandler } from "express";
 import { TimeEntryPaginationInput } from "../../../types/time-entry";
 import timeEntryRepository from "../repository";
+import { getTimeEntriesReportSchema } from "../zod-schemas";
 
-const timeEntriesPaginationHandler: RequestHandler = async (req, res, next) => {
+const getTimeEntriesReportHandler: RequestHandler = async (req, res, next) => {
   let timeEntries;
+  const query = getTimeEntriesReportSchema.parse(req.query);
+
   try {
     timeEntries = await timeEntryRepository.getTimeEntriesPaginated({
-      ...(req.query as unknown as TimeEntryPaginationInput),
+      ...query,
       userId: req.user.id,
     });
   } catch (error) {
@@ -17,4 +20,4 @@ const timeEntriesPaginationHandler: RequestHandler = async (req, res, next) => {
   return res.json(timeEntries);
 };
 
-export default timeEntriesPaginationHandler;
+export default getTimeEntriesReportHandler;

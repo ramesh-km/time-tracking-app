@@ -1,16 +1,42 @@
 import { Badge, Group, ActionIcon } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { IconPlayerPause, IconEdit, IconTrash } from "@tabler/icons-react";
+import dayjs from "dayjs";
+import useDeleteTimeEntry from "../../../hooks/useDeleteTimeEntry";
+import { getDuration } from "../../../lib/dates";
+import queryClient from "../../../lib/query-client";
+import { queryKeys } from "../../../lib/react-query-keys";
+import { TimeEntry } from "../../../types/time-entries";
 
-type TableRowProps = {};
+type TableRowProps = {
+  timeEntry: TimeEntry;
+};
 
 function TableRow(props: TableRowProps) {
+  const { timeEntry } = props;
+  
+  const deleteMutation = useDeleteTimeEntry();
+  const handleDelete = () => {
+    deleteMutation.mutate(timeEntry.id, {
+      onSuccess: () => {
+        notifications.show({
+          title: "Timer deleted",
+          message: "Time entry has been deleted",
+          color: "red",
+          id: "timer-deleted",
+        });
+        queryClient.invalidateQueries([queryKeys.allCurrentWeekEntries]);
+      },
+    });
+  };
+
   return (
     <tr>
-      <td>Task 1</td>
-      <td>10:00 AM</td>
-      <td>10:30 AM</td>
+      <td>{timeEntry.note}</td>
+      <td>{dayjs(timeEntry.start).format("HH:mm")}</td>
+      <td>{dayjs(timeEntry.end).format("HH:mm")}</td>
       <td>
-        <Badge>00:30:00</Badge>
+        <Badge>{getDuration(timeEntry.start, timeEntry.end)}</Badge>
       </td>
       <td>
         <Group>
@@ -20,7 +46,9 @@ function TableRow(props: TableRowProps) {
           <ActionIcon>
             <IconEdit />
           </ActionIcon>
-          <ActionIcon>
+          <ActionIcon
+            onClick={handleDelete}
+          >
             <IconTrash />
           </ActionIcon>
         </Group>

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import prisma from "../../lib/prisma";
 import {
   CreateTimeEntryInput,
@@ -52,6 +53,7 @@ async function update(id: number, data: UpdateTimeEntryInput) {
 async function getTimeEntriesPaginated(
   query: TimeEntryPaginationInput & { userId: number }
 ) {
+  console.log("🚀 ~ file: repository.ts:55 ~ query:", query);
   const timeEntries = await prisma.timeEntry.findMany({
     where: {
       userId: query.userId,
@@ -62,13 +64,16 @@ async function getTimeEntriesPaginated(
       note: {
         contains: query.note || undefined,
       },
-      tags: {
-        some: {
-          name: {
-            in: query.tags || undefined,
-          },
-        },
-      },
+      tags:
+        query.tags.length > 0
+          ? {
+              some: {
+                name: {
+                  in: query.tags || undefined,
+                },
+              },
+            }
+          : undefined,
     },
     include: { tags: true },
     take: query.size,
@@ -81,11 +86,38 @@ async function getTimeEntriesPaginated(
   return timeEntries;
 }
 
+async function getAllCurrentWeekEntries(userId: number) {
+  const timeEntries = await prisma.timeEntry.findMany({
+    where: {
+      userId,
+      start: {
+        gte: dayjs().startOf("week").toDate(),
+        lte: dayjs().toDate(),
+      },
+    },
+    include: { tags: true },
+    orderBy: {
+      start: "desc",
+    },
+  });
+
+  return timeEntries;
+}
+
+async function deleteTimeEntry(id: number) {
+  const timeEntry = await prisma.timeEntry.delete({
+    where: { id },
+  });
+  return timeEntry;
+}
+
 const timeEntryRepository = {
   create,
   getTimeEntry,
   update,
   getTimeEntriesPaginated,
+  getAllCurrentWeekEntries,
+  deleteTimeEntry
 };
 
 export default timeEntryRepository;

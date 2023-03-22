@@ -1,6 +1,11 @@
 export const queryKeys = {
+  // Tags
   allTagsWithCount: "allTagsWithCount",
   allTags: "allTags",
+
+  // Time entries
+  getTimeEntriesReport: "getTimeEntriesReport",
+  allCurrentWeekEntries: "allCurrentWeekEntries",
 };
 
 export const mutationKeys = {

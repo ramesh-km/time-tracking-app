@@ -1,22 +1,26 @@
 import { Router } from "express";
 import validate from "../../lib/middleware/validate";
 import { idSchema } from "../../lib/zod-schemas";
-import { createTagSchema } from "../tag/zod-schemas";
+import getAllCurrentWeekEntriesHandler from "./handlers/all-current-week-entries";
 import createTimeEntryHandler from "./handlers/create-time-entry";
+import deleteTimeEntryHandler from "./handlers/delete-time-entry";
 import getTimeEntryHandler from "./handlers/get-time-entry";
-import timeEntriesPaginationHandler from "./handlers/time-entries-paginated";
+import getTimeEntriesReportHandler from "./handlers/time-entries-report";
 import updateTimeEntryHandler from "./handlers/update-time-entry";
-import { createTimeEntrySchema, timeEntriesPaginationSchema } from "./zod-schemas";
+import { createTimeEntrySchema, getTimeEntriesReportSchema } from "./zod-schemas";
 
 const router = Router();
 
 router.post("/", validate(createTimeEntrySchema), createTimeEntryHandler);
+router.get(
+  "/report",
+  validate(getTimeEntriesReportSchema, "query"),
+  getTimeEntriesReportHandler
+);
+router.get('/all-current-week-entries', getAllCurrentWeekEntriesHandler);
 router.get("/:id", validate(idSchema, "params"), getTimeEntryHandler);
 router.put("/:id", validate(idSchema, "params"), updateTimeEntryHandler);
-router.get(
-  "/paginated",
-  validate(timeEntriesPaginationSchema, "query"),
-  timeEntriesPaginationHandler
-);
+router.delete("/:id", validate(idSchema, "params"), deleteTimeEntryHandler);
+
 
 export default router;

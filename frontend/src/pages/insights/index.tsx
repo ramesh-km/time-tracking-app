@@ -1,6 +1,7 @@
 import { Box, Container, Divider, Stack, Text } from "@mantine/core";
 import React from "react";
 import { init, number, time } from "echarts";
+import { useDocumentTitle } from "@mantine/hooks";
 
 const getVirtualData = () => {
   const date = number.parseDate("2016-01-01");
@@ -19,7 +20,7 @@ const getVirtualData = () => {
 export function Component() {
   const barChartRef = React.useRef<HTMLDivElement>(null);
   const heatmapChartRef = React.useRef<HTMLDivElement>(null);
-
+  useDocumentTitle("Insights");
   React.useEffect(() => {
     if (!barChartRef.current || !heatmapChartRef.current) {
       return;

@@ -18,8 +18,11 @@ import { registerUser as registerUserApi } from "../lib/api/users";
 import { mutationKeys } from "../lib/react-query-keys";
 import useAuth from "../hooks/useAuth";
 import useAuthCheck from "../hooks/useAuthCheck";
+import { useDocumentTitle } from "@mantine/hooks";
 
 function RegisterPage() {
+  useDocumentTitle(`Time Tracker | Register`);
+
   useAuthCheck();
   const {
     register,

@@ -12,7 +12,6 @@ function validate(
       next(zodResult.error);
       return;
     }
-
     next();
   };
 }

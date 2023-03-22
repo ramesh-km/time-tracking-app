@@ -25,7 +25,7 @@ import {
   IconMoonStars,
 } from "@tabler/icons-react";
 import { FaStopwatch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useDocumentTitle } from "@mantine/hooks";
 import useAuth from "../../../hooks/useAuth";
 
@@ -125,25 +125,24 @@ const data = [
 ];
 
 function AppNavbar() {
-  const { logout, user } = useAuth();
+  const { logout} = useAuth();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState("Billing");
-  useDocumentTitle(`Time Tracker | ${active}`);
 
   const links = data.map((item) => (
-    <Link
-      className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
-      })}
+    <NavLink
+      className={(props) =>
+        cx(classes.link, {
+          // TODO:
+          // eslint-disable-next-line react/prop-types
+          [classes.linkActive]: props.isActive,
+        })
+      }
       to={item.link}
       key={item.label}
-      onClick={(event) => {
-        setActive(item.label);
-      }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </Link>
+    </NavLink>
   ));
 
   const theme = useMantineTheme();

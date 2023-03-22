@@ -20,8 +20,11 @@ import { loginUser } from "../lib/api/users";
 import useAuth from "../hooks/useAuth";
 import { showNotification } from "@mantine/notifications";
 import { IconExclamationMark } from "@tabler/icons-react";
+import { useDocumentTitle } from "@mantine/hooks";
 
 function LoginPage() {
+  useDocumentTitle(`Time Tracker | Login`);
+
   useAuthCheck();
   const {
     register,
@@ -61,12 +64,14 @@ function LoginPage() {
         <TextInput
           label="Email"
           error={errors.email?.message}
+          autoComplete="email"
           {...register("email")}
         />
         <PasswordInput
           label="Password"
           error={errors.password?.message}
           {...register("password")}
+          autoComplete="current-password"
           description={
             <Text size={"sm"}>
               Forgot your password?{" "}

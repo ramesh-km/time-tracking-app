@@ -1,11 +1,19 @@
-import { Button, Grid, MultiSelect, Stack, TextInput } from "@mantine/core";
+import { Button, Grid, Stack, TextInput } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconNote, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { createTag, getAllTags } from "../../lib/api/tags";
-import { createTimeEntry } from "../../lib/api/time-entries";
+import useDeleteTimeEntry from "../../hooks/useDeleteTimeEntry";
+import { getAllTags } from "../../lib/api/tags";
+import {
+  createTimeEntry,
+  getAllCurrentWeekEntries,
+} from "../../lib/api/time-entries";
 import queryClient from "../../lib/query-client";
 import { mutationKeys, queryKeys } from "../../lib/react-query-keys";
 import TagsSelection from "./components/TagsSelection";
@@ -17,15 +25,32 @@ export async function loader() {
     queryFn: getAllTags,
   } as const;
 
-  return await queryClient.ensureQueryData(tagsQuery);
+  const timeEntriesQuery = {
+    queryKey: [queryKeys.allCurrentWeekEntries],
+    queryFn: getAllCurrentWeekEntries,
+  };
+
+  return [
+    await queryClient.ensureQueryData(tagsQuery),
+    await queryClient.ensureQueryData(timeEntriesQuery),
+  ] as const;
 }
 
 export function Component() {
-  const tagsInitialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  useDocumentTitle("Timer");
+
+  const [tagsInitialData, timeEntriesInitialData] = useLoaderData() as Awaited<
+    ReturnType<typeof loader>
+  >;
   const tagsQuery = useQuery({
     queryKey: [queryKeys.allTags],
     queryFn: getAllTags,
     initialData: tagsInitialData,
+  });
+  const timeEntriesQuery = useQuery({
+    queryKey: [queryKeys.allCurrentWeekEntries],
+    queryFn: getAllCurrentWeekEntries,
+    initialData: timeEntriesInitialData,
   });
 
   const [tags, setTags] = useState<string[]>([]);
@@ -40,16 +65,21 @@ export function Component() {
     setTags(value);
   };
 
+
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: [mutationKeys.createTimeEntry],
     mutationFn: createTimeEntry,
     onSuccess: () => {
-      notifications.show({
-        title: "Timer started",
-        message: "Time entry has been created",
-        color: "teal",
-      });
+      // notifications.show({
+      //   title: "Timer started",
+      //   message: "Time entry has been created",
+      //   color: "teal",
+      // });
+
+      queryClient.invalidateQueries([queryKeys.allCurrentWeekEntries]);
+      setNote("");
+      setTags([]);
     },
   });
 
@@ -87,16 +117,40 @@ export function Component() {
           />
         </Grid.Col>
         <Grid.Col span={"content"}>
-          <Button onClick={handleTimerStart} loading={mutation.isLoading}>
+          <Button
+            onClick={handleTimerStart}
+            loading={mutation.isLoading}
+            loaderPosition="center"
+            disabled={note.length === 0}
+          >
             {isTimerOn ? <IconPlayerPlay /> : <IconPlayerPause />}
           </Button>
         </Grid.Col>
       </Grid>
 
-      <TimerHistoryTable />
-      <TimerHistoryTable />
-      <TimerHistoryTable />
-      <TimerHistoryTable />
+      <TimerHistoryTable
+        group="today"
+        data={timeEntriesQuery.data.filter((t) =>
+          dayjs(t.start).isSame(dayjs(), "day")
+        )}
+      />
+      <TimerHistoryTable
+        group="yesterday"
+        data={timeEntriesQuery.data.filter((t) =>
+          dayjs(t.start).isSame(dayjs().subtract(1, "day"), "day")
+        )}
+      />
+      <TimerHistoryTable
+        group="this week"
+        data={timeEntriesQuery.data.filter((t) =>
+          dayjs(t.start).isBetween(
+            dayjs().startOf("week"),
+            dayjs().subtract(1, "day"),
+            "day",
+            "[)"
+          )
+        )}
+      />
     </Stack>
   );
 }

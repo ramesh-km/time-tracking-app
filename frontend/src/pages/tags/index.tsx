@@ -9,6 +9,7 @@ import TagsTableHeader from "./components/TagsTableHeader";
 import { modals } from "@mantine/modals";
 import CreateTag from "./components/CreateTag";
 import TagsTableRow from "./components/TagsTableRow";
+import { useDocumentTitle } from "@mantine/hooks";
 
 const tagsQuery = {
   queryKey: [queryKeys.allTagsWithCount],
@@ -22,6 +23,8 @@ export async function loader() {
 }
 
 export function Component() {
+  useDocumentTitle("Tags");
+
   const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
   const { data: tags } = useQuery({
     ...tagsQuery,
