@@ -110,12 +110,26 @@ async function deleteTimeEntry(id: number) {
   });
   return timeEntry;
 }
+
 async function stop(id: number) {
   const timeEntry = await prisma.timeEntry.update({
     where: { id },
     data: {
       end: new Date(),
-    }
+    },
+  });
+  return timeEntry;
+}
+
+async function stopActiveTimeEntry(userId: number) {
+  const timeEntry = await prisma.timeEntry.updateMany({
+    where: {
+      userId,
+      end: null,
+    },
+    data: {
+      end: new Date(),
+    },
   });
   return timeEntry;
 }
@@ -127,7 +141,8 @@ const timeEntryRepository = {
   getTimeEntriesPaginated,
   getAllCurrentWeekEntries,
   deleteTimeEntry,
-   stop,
+  stop,
+  stopActiveTimeEntry,
 };
 
 export default timeEntryRepository;

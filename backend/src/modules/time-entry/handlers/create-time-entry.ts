@@ -8,6 +8,9 @@ const createTimeEntryHandler: RequestHandler = async (req, res, next) => {
   req.user;
   let timeEntry;
   try {
+    // Stop the exisiting active time entry if any
+    await timeEntryRepository.stopActiveTimeEntry(req.user.id);
+
     timeEntry = await timeEntryRepository.create({
       note,
       tags,
