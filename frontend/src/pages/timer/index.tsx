@@ -30,10 +30,10 @@ export async function loader() {
     queryFn: getAllCurrentWeekEntries,
   };
 
-  return [
-    await queryClient.ensureQueryData(tagsQuery),
-    await queryClient.ensureQueryData(timeEntriesQuery),
-  ] as const;
+  return await Promise.all([
+    queryClient.ensureQueryData(tagsQuery),
+    queryClient.ensureQueryData(timeEntriesQuery),
+  ]);
 }
 
 export function Component() {
@@ -64,7 +64,6 @@ export function Component() {
   const handleTagsChange = (value: string[]) => {
     setTags(value);
   };
-
 
   const queryClient = useQueryClient();
   const mutation = useMutation({

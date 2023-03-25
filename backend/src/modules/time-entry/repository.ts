@@ -31,22 +31,21 @@ async function getTimeEntry(id: number) {
   return timeEntry;
 }
 
-async function update(id: number, data: UpdateTimeEntryInput) {
+async function update(id: number, data: UpdateTimeEntryInput, userId: number) {
   const { note, tags, end, start } = data;
+
   const timeEntry = await prisma.timeEntry.update({
     where: { id },
     data: {
       note,
+      tags: {
+        set: tags.map((tag) => ({ name: tag })),
+      },
       end,
       start,
-      tags: {
-        connectOrCreate: tags.map((tag) => ({
-          where: { name: tag },
-          create: { name: tag },
-        })),
-      },
     },
   });
+
   return timeEntry;
 }
 

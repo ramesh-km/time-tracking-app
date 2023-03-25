@@ -16,7 +16,7 @@ const updateTimeEntryHandler: RequestHandler = async (req, res, next) => {
 
   let timeEntry;
   try {
-    timeEntry = await timeEntryRepository.update(id, updateData);
+    timeEntry = await timeEntryRepository.update(id, updateData, req.user.id);
   } catch (error) {
     next(error);
     return;

@@ -35,3 +35,15 @@ export const createTagSchema = z.object({
     .min(1)
     .max(50),
 });
+
+export const createTimeEntrySchema = z.object({
+  note: z.string().min(1).max(255),
+  tags: z.array(z.string().min(1).max(50)),
+});
+
+export const updateTimeEntrySchema = z
+  .object({
+    start: z.date(),
+    end: z.date().optional(),
+  })
+  .merge(createTimeEntrySchema);

@@ -6,6 +6,7 @@ export const queryKeys = {
   // Time entries
   getTimeEntriesReport: "getTimeEntriesReport",
   allCurrentWeekEntries: "allCurrentWeekEntries",
+  getTimeEntry: "getTimeEntry",
 };
 
 export const mutationKeys = {

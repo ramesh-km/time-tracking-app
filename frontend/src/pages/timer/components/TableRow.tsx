@@ -1,8 +1,18 @@
-import { Badge, Group, ActionIcon, Loader, Code, Kbd } from "@mantine/core";
+import {
+  Badge,
+  Group,
+  ActionIcon,
+  Loader,
+  Code,
+  Kbd,
+  Text,
+  Center,
+} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconPlayerPause, IconEdit, IconTrash } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { openUpdateTimeEntryModal } from "../../../components/modals/UpdateTimeEntry";
 import useDeleteTimeEntry from "../../../hooks/useDeleteTimeEntry";
 import useStopTimeEntry from "../../../hooks/useStopTimeEntry";
 import { formatDuration, getDuration } from "../../../lib/dates";
@@ -48,6 +58,10 @@ function TableRow(props: TableRowProps) {
     });
   };
 
+  const handleEdit = () => {
+    openUpdateTimeEntryModal(timeEntry.id);
+  };
+
   useEffect(() => {
     if (timeEntry.end) {
       return;
@@ -63,7 +77,16 @@ function TableRow(props: TableRowProps) {
 
   return (
     <tr>
-      <td>{timeEntry.note}</td>
+      <td>
+        <Group>
+          <Text fw={timeEntry.end ? "normal" : "bold"}>{timeEntry.note}</Text>
+          {timeEntry.tags.map((tag) => (
+            <Badge key={tag.name} color={tag.name} size="xs">
+              {tag.name}
+            </Badge>
+          ))}
+        </Group>
+      </td>
       <td>{dayjs(timeEntry.start).format("HH:mm")}</td>
       <td>{timeEntry.end ? dayjs(timeEntry.end).format("HH:mm") : "-"}</td>
       <td>
@@ -75,14 +98,14 @@ function TableRow(props: TableRowProps) {
       </td>
       <td>
         <Group>
-          <ActionIcon>
+          <ActionIcon color="blue" onClick={handleEdit}>
             <IconEdit />
           </ActionIcon>
-          <ActionIcon onClick={handleDelete}>
+          <ActionIcon color={"red"} onClick={handleDelete}>
             <IconTrash />
           </ActionIcon>
           {timeEntry.end ? null : (
-            <ActionIcon onClick={handleStop}>
+            <ActionIcon color="teal" onClick={handleStop}>
               <IconPlayerPause />
             </ActionIcon>
           )}
