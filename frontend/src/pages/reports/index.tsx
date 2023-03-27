@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Group,
+  Pagination,
   Stack,
   Table,
 } from "@mantine/core";
@@ -14,9 +15,13 @@ import { IconEdit, IconFileExport } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import { getTimeEntriesReport } from "../../lib/api/time-entries";
 import queryClient from "../../lib/query-client";
 import { queryKeys } from "../../lib/react-query-keys";
+import ReportsTableHeader from "./components/ReportsTableHeader";
+import ReportsTableRow from "./components/ReportsTableRow";
+import SelectPageSize from "./components/SelectPageSize";
 
 const defaultDates: DatesRangeValue = [
   dayjs().toDate(),
@@ -28,8 +33,6 @@ export async function loader() {
     queryKey: [
       queryKeys.getTimeEntriesReport,
       {
-        from: dayjs().startOf("week").toDate(),
-        to: dayjs().toDate(),
         page: 0,
         size: 10,
       },
@@ -42,46 +45,50 @@ export async function loader() {
 
 export function Component() {
   useDocumentTitle("Reports");
-  const [value, setValue] = useState<DatesRangeValue>(defaultDates);
+  const [dates, setDates] = useState<DatesRangeValue>(defaultDates);
+  const [page, setPage] = useState(0);
+  const activePage = page + 1;
+  const [size, setSize] = useState(10);
+
   const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+  const query = useQuery({
+    queryKey: [
+      queryKeys.getTimeEntriesReport,
+      {
+        page,
+        size,
+      },
+    ],
+    queryFn: getTimeEntriesReport,
+    initialData,
+  });
+  const totalPages = Math.ceil(query.data.total / size);
 
   return (
     <Stack spacing="xl">
-      <Group>
-        <DatePickerInput type="range" value={value} onChange={setValue} />
+      <Group
+        align={"flex-end"}
+      >
+        <DatePickerInput
+          label="Reports For Date Range"
+          type="range"
+          value={dates}
+          onChange={setDates}
+        />
         <Button leftIcon={<IconFileExport />}>Export</Button>
       </Group>
       <Table>
-        <thead>
-          <tr>
-            <th>Task</th>
-            <th>Date</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Duration</th>
-            <th>Tags</th>
-            <th>Update</th>
-          </tr>
-        </thead>
+        <ReportsTableHeader />
         <tbody>
-          <tr>
-            <td>Task 1</td>
-            <td>15th May 2021</td>
-            <td>10:00 AM</td>
-            <td>10:30 AM</td>
-            <td>30 minutes</td>
-            <th>
-              <Badge color="blue">Tag 1</Badge>
-              <Badge color="blue">Tag 2</Badge>
-            </th>
-            <th>
-              <ActionIcon>
-                <IconEdit />
-              </ActionIcon>
-            </th>
-          </tr>
+          {query.data.data.map((timeEntry) => (
+            <ReportsTableRow key={timeEntry.id} timeEntry={timeEntry} />
+          ))}
         </tbody>
       </Table>
+      <Group position="apart" align={"flex-end"}>
+        <SelectPageSize size={size} onChange={setSize} />
+        <Pagination value={activePage} onChange={setPage} total={totalPages} />
+      </Group>
     </Stack>
   );
 }

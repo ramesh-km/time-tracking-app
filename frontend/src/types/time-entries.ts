@@ -14,4 +14,14 @@ export interface CreateTimeEntryInput {
   note: string;
   tags: string[];
 }
+
+export interface ReportsDataRow extends TimeEntry {
+  tags: Tag[];
+}
+
+export interface ReportsData {
+  data: ReportsDataRow[];
+  total: number;
+}
+
 export type UpdateTimeEntryInput = z.infer<typeof updateTimeEntrySchema>;

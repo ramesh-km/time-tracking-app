@@ -17,8 +17,8 @@ export const getTimeEntriesReportSchema = z.object({
   page: z.coerce.number().int().min(0).default(0),
   size: z.coerce.number().int().min(1).max(100).default(10),
   // default to current week
-  from: z.coerce.date().optional().default(dayjs().startOf("week").toDate()),
-  to: z.coerce.date().optional().default(dayjs().toDate()),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
   tags: z.preprocess(
     (value) => (value ? String(value).split(",").filter(Boolean) : []),
     z.array(z.string().min(1).max(50)).optional().default([])

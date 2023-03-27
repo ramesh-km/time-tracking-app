@@ -62,36 +62,47 @@ async function update(id: number, data: UpdateTimeEntryInput, userId: number) {
 async function getTimeEntriesPaginated(
   query: TimeEntryPaginationInput & { userId: number }
 ) {
-  const timeEntries = await prisma.timeEntry.findMany({
-    where: {
-      userId: query.userId,
-      start: {
-        gte: query.from,
-        lte: query.to,
-      },
-      note: {
-        contains: query.note || undefined,
-      },
-      tags:
-        query.tags.length > 0
-          ? {
-              some: {
-                name: {
-                  in: query.tags || undefined,
+  const data = await prisma.$transaction(async (tx) => {
+    const dbQuery = {
+      where: {
+        userId: query.userId,
+        start: {
+          gte: query.from || undefined,
+          lte: query.to || undefined,
+        },
+        note: {
+          contains: query.note || undefined,
+        },
+        tags:
+          query.tags.length > 0
+            ? {
+                some: {
+                  name: {
+                    in: query.tags || undefined,
+                  },
                 },
-              },
-            }
-          : undefined,
-    },
-    include: { tags: true },
-    take: query.size,
-    skip: query.page * query.size,
-    orderBy: {
-      [query.sort]: query.direction,
-    },
+              }
+            : undefined,
+      },
+      include: { tags: true },
+      take: query.size,
+      skip: query.page * query.size,
+      orderBy: {
+        [query.sort]: query.direction,
+      },
+    };
+    const timeEntries = await tx.timeEntry.findMany(dbQuery);
+    const count = await tx.timeEntry.count({
+      where: dbQuery.where,
+    });
+
+    return {
+      data: timeEntries,
+      total: count,
+    };
   });
 
-  return timeEntries;
+  return data;
 }
 
 async function getAllCurrentWeekEntries(userId: number) {

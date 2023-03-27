@@ -1,5 +1,7 @@
+import { Tag } from "../../types/tags";
 import {
   CreateTimeEntryInput,
+  ReportsData,
   TimeEntry,
   UpdateTimeEntryInput,
 } from "../../types/time-entries";
@@ -21,7 +23,7 @@ export async function updateTimeEntry(
 }
 
 export async function getTimeEntriesReport() {
-  const res = await http.get<TimeEntry[]>("/time-entry/report");
+  const res = await http.get<ReportsData>("/time-entry/report");
   return res.data;
 }
 
