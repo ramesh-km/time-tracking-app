@@ -19,11 +19,9 @@ async function create(data: RegisterUserInput) {
   return user;
 }
 
-async function getByEmail(email: string) {
+async function getUser(where: Prisma.UserWhereUniqueInput) {
   const user = await prisma.user.findUniqueOrThrow({
-    where: {
-      email,
-    },
+    where,
   });
   return user;
 }
@@ -39,9 +37,9 @@ async function update(id: number, data: Prisma.UserUpdateInput) {
 }
 
 const userRepository = {
-   create,
-   getByEmail,
-   update,
+  create,
+  getUser,
+  update,
 };
 
 export default userRepository;

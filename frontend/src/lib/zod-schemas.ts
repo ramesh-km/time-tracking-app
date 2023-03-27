@@ -11,6 +11,19 @@ export const registerSchema = z
   })
   .merge(loginSchema);
 
+export const updateUserDataSchema = z.object({
+  name: z.string().min(2, "Name should be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  currentPassword: z
+    .string()
+    .min(8, "Password should be at least 8 characters")
+    .optional(),
+  newPassword: z
+    .string()
+    .min(8, "Password should be at least 8 characters")
+    .optional(),
+});
+
 export const apiErrorSchema = z.object({
   message: z.string(),
   error: z.any().optional(),

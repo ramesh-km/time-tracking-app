@@ -4,10 +4,12 @@ import {
   registerSchema,
   resetLinkParamsSchema,
   resetPasswordSchema,
+  updateUserDataSchema,
 } from "../lib/zod-schemas";
 
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerSchema>;
+export type UpdateUserData = z.infer<typeof updateUserDataSchema>;
 export type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 export type ResetLinkParams = z.infer<typeof resetLinkParamsSchema>;
 export type ForgotPasswordFormData = {

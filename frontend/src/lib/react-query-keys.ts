@@ -15,6 +15,7 @@ export const mutationKeys = {
   register: "register",
   forgotPassword: "forgotPassword",
   resetPassword: "resetPassword",
+  updateUserData: "updateUserData",
 
   // Tags
   createTag: "createTag",

@@ -3,6 +3,7 @@ import {
   RegisterFormData,
   ResetLinkParams,
   ResetPasswordFormData,
+  UpdateUserData,
   User,
 } from "../../types/users";
 import http from "../http";
@@ -26,5 +27,10 @@ export async function resetPassword(
   data: ResetPasswordFormData & ResetLinkParams
 ) {
   const res = await http.post("/user/reset-password", data);
+  return res.data;
+}
+
+export async function updateUserData(data: UpdateUserData) {
+  const res = await http.put<User>("/user", data);
   return res.data;
 }

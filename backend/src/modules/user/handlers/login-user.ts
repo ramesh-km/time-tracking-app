@@ -3,13 +3,14 @@ import createHttpError from "http-errors";
 import { compareWithHash, generateToken, getSafeUser } from "../services";
 import { safePromise } from "../../../lib/utils";
 import userRepository from "../repository";
+import { LoginUserInput } from "../../../types/user";
 
 const loginUserHandler: RequestHandler = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as LoginUserInput;
 
   let user;
   try {
-    user = await userRepository.getByEmail(email);
+    user = await userRepository.getUser({ email });
   } catch (error) {
     next(error);
     return;
@@ -22,10 +23,6 @@ const loginUserHandler: RequestHandler = async (req, res, next) => {
   );
 
   if (!isPasswordValid) {
-    console.log(
-      "🚀 ~ file: login-user.ts:29 ~ constloginUserHandler:RequestHandler= ~ isPasswordValid:",
-      isPasswordValid
-    );
     next(createHttpError(401, "Invalid credentials"));
     return;
   }

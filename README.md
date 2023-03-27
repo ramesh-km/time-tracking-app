@@ -3,4 +3,5 @@
 ## Bugs
 
 - [ ] Theme(dark) is not applied to the modals.
+- [ ] Edit end time for active timer and check duration.
 

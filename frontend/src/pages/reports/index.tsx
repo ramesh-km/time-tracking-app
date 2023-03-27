@@ -70,7 +70,7 @@ export function Component() {
         align={"flex-end"}
       >
         <DatePickerInput
-          label="Reports For Date Range"
+          label="Report For Date Range"
           type="range"
           value={dates}
           onChange={setDates}
