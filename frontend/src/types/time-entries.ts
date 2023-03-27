@@ -10,5 +10,8 @@ export interface TimeEntry {
   tags: Tag[];
 }
 
-export type CreateTimeEntryInput = Pick<TimeEntry, "note" | "tags">;
+export interface CreateTimeEntryInput {
+  note: string;
+  tags: string[];
+}
 export type UpdateTimeEntryInput = z.infer<typeof updateTimeEntrySchema>;

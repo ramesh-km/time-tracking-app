@@ -89,7 +89,7 @@ export function Component() {
   const handleTimerStart = () => {
     mutation.mutate({
       note,
-      tags,
+      tags
     });
   };
 

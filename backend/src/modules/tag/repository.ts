@@ -10,6 +10,9 @@ function create(name: string, userId: number) {
         },
       },
     },
+    select: {
+      name: true,
+    },
   });
 }
 
@@ -21,6 +24,9 @@ function deleteTag(name: string, userId: number) {
         userId,
       },
     },
+    select: {
+      name: true,
+    },
   });
 }
 
@@ -29,7 +35,8 @@ function getAll(includeCount = false, userId: number) {
     where: {
       userId,
     },
-    include: {
+    select: {
+      name: true,
       _count: includeCount,
     },
   });
