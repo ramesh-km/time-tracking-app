@@ -11,17 +11,39 @@ import {
 import { DateInput, DatePickerInput, DatesRangeValue } from "@mantine/dates";
 import { useDocumentTitle } from "@mantine/hooks";
 import { IconEdit, IconFileExport } from "@tabler/icons-react";
+import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { getTimeEntriesReport } from "../../lib/api/time-entries";
+import queryClient from "../../lib/query-client";
+import { queryKeys } from "../../lib/react-query-keys";
 
 const defaultDates: DatesRangeValue = [
   dayjs().toDate(),
   dayjs().add(1, "day").toDate(),
 ];
 
+export async function loader() {
+  const reportsQuery = {
+    queryKey: [
+      queryKeys.getTimeEntriesReport,
+      {
+        from: dayjs().startOf("week").toDate(),
+        to: dayjs().toDate(),
+        page: 0,
+        size: 10,
+      },
+    ],
+    queryFn: getTimeEntriesReport,
+  };
+
+  return await queryClient.ensureQueryData(reportsQuery);
+}
+
 export function Component() {
   useDocumentTitle("Reports");
   const [value, setValue] = useState<DatesRangeValue>(defaultDates);
+  const initialData = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
   return (
     <Stack spacing="xl">

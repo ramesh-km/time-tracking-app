@@ -15,7 +15,7 @@ async function create(data: CreateTimeEntryInput & { userId: number }) {
       tags: {
         connectOrCreate: tags.map((tag) => ({
           where: { name: tag },
-          create: { name: tag },
+          create: { name: tag, userId },
         })),
       },
     },
@@ -23,9 +23,14 @@ async function create(data: CreateTimeEntryInput & { userId: number }) {
   return timeEntry;
 }
 
-async function getTimeEntry(id: number) {
+async function getTimeEntry(id: number, userId: number) {
   const timeEntry = await prisma.timeEntry.findUnique({
-    where: { id },
+    where: {
+      id_userId: {
+        id,
+        userId,
+      },
+    },
     include: { tags: true },
   });
   return timeEntry;
@@ -35,7 +40,12 @@ async function update(id: number, data: UpdateTimeEntryInput, userId: number) {
   const { note, tags, end, start } = data;
 
   const timeEntry = await prisma.timeEntry.update({
-    where: { id },
+    where: {
+      id_userId: {
+        id,
+        userId,
+      },
+    },
     data: {
       note,
       tags: {
@@ -52,7 +62,6 @@ async function update(id: number, data: UpdateTimeEntryInput, userId: number) {
 async function getTimeEntriesPaginated(
   query: TimeEntryPaginationInput & { userId: number }
 ) {
-  console.log("🚀 ~ file: repository.ts:55 ~ query:", query);
   const timeEntries = await prisma.timeEntry.findMany({
     where: {
       userId: query.userId,
@@ -103,16 +112,26 @@ async function getAllCurrentWeekEntries(userId: number) {
   return timeEntries;
 }
 
-async function deleteTimeEntry(id: number) {
+async function deleteTimeEntry(id: number, userId: number) {
   const timeEntry = await prisma.timeEntry.delete({
-    where: { id },
+    where: {
+      id_userId: {
+        id,
+        userId,
+      },
+    },
   });
   return timeEntry;
 }
 
-async function stop(id: number) {
+async function stop(id: number, userId: number) {
   const timeEntry = await prisma.timeEntry.update({
-    where: { id },
+    where: {
+      id_userId: {
+        id,
+        userId,
+      },
+    },
     data: {
       end: new Date(),
     },

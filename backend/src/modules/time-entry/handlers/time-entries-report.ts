@@ -1,5 +1,4 @@
 import { RequestHandler } from "express";
-import { TimeEntryPaginationInput } from "../../../types/time-entry";
 import timeEntryRepository from "../repository";
 import { getTimeEntriesReportSchema } from "../zod-schemas";
 

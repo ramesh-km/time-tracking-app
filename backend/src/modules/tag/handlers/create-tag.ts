@@ -7,7 +7,7 @@ const createTagHandler: RequestHandler = async (req, res, next) => {
 
   let tag;
   try {
-    tag = await tagRepository.create(name);
+    tag = await tagRepository.create(name, req.user.id);
   } catch (error) {
     next(error);
   }

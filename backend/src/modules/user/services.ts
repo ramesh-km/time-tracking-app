@@ -114,6 +114,9 @@ export async function validatePasswordResetTicket(id: number, token: string) {
     where: {
       id,
     },
+    include: {
+      user: true,
+    }
   });
 
   if (!ticket || ticket.invalid !== "NONE") {
@@ -124,17 +127,6 @@ export async function validatePasswordResetTicket(id: number, token: string) {
   const tokensMatch = await compareWithHash(token, ticket.token);
 
   if (!tokensMatch) {
-    throw new Error("Invalid password reset ticket");
-  }
-
-  // Get the user from the ticket id
-  const user = await prisma.user.findUnique({
-    where: {
-      id: ticket.userId,
-    },
-  });
-
-  if (!user) {
     throw new Error("Invalid password reset ticket");
   }
 
@@ -156,5 +148,5 @@ export async function validatePasswordResetTicket(id: number, token: string) {
     throw error;
   }
 
-  return getSafeUser(user);
+  return getSafeUser(ticket.user);
 }

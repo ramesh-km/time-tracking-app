@@ -7,7 +7,7 @@ const deleteTimeEntryHandler: RequestHandler = async (req, res, next) => {
 
   let timeEntry; 
   try {
-    timeEntry = await timeEntryRepository.deleteTimeEntry(id)
+    timeEntry = await timeEntryRepository.deleteTimeEntry(id, req.user.id)
   } catch (error) {
     next(error);
     return;

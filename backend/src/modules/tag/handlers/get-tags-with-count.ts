@@ -4,7 +4,7 @@ import tagRepository from "../repository";
 const getTagsWithCountHandler: RequestHandler = async (req, res, next) => {
   let tags;
   try {
-    tags = await tagRepository.getAll(true);
+    tags = await tagRepository.getAll(true, req.user.id);
   } catch (error) {
     next(error);
     return;

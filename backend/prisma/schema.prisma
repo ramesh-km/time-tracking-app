@@ -11,16 +11,23 @@ datasource db {
 }
 
 model User {
-  id          Int    @id @default(autoincrement())
-  email       String @unique
-  name        String
-  password    String
-  preferences Json   @default("{}")
+  id                  Int                   @id @default(autoincrement())
+  email               String                @unique
+  name                String
+  password            String
+  preferences         Json                  @default("{}")
+  Tag                 Tag[]
+  TimeEntry           TimeEntry[]
+  PasswordResetTicket PasswordResetTicket[]
 }
 
 model Tag {
   name        String      @id @unique @db.VarChar(50)
+  user        User        @relation(fields: [userId], references: [id])
   timeEntries TimeEntry[]
+  userId      Int
+
+  @@unique([name, userId])
 }
 
 model TimeEntry {
@@ -28,8 +35,11 @@ model TimeEntry {
   start  DateTime  @default(now())
   end    DateTime?
   note   String
-  userId Int
+  user   User      @relation(fields: [userId], references: [id])
   tags   Tag[]
+  userId Int
+
+  @@unique([id, userId])
 }
 
 // Links are valid for 1 hour from creation time
@@ -37,8 +47,9 @@ model PasswordResetTicket {
   id        Int                 @id @default(autoincrement())
   createdAt DateTime            @default(now())
   token     String              @unique
-  userId    Int
+  user      User                @relation(fields: [userId], references: [id])
   invalid   InvalidTicketReason @default(NONE)
+  userId    Int
 }
 
 enum InvalidTicketReason {

@@ -6,7 +6,7 @@ const stopTimeEntryHandler: RequestHandler = async (req, res, next) => {
 
   let timeEntry;
   try {
-    timeEntry = await timeEntryRepository.stop(id);
+    timeEntry = await timeEntryRepository.stop(id, req.user.id);
   } catch (error) {
     next(error);
     return;

@@ -6,7 +6,7 @@ const getTimeEntryHandler: RequestHandler = async (req, res, next) => {
 
   let timeEntry;
   try {
-    timeEntry = await timeEntryRepository.getTimeEntry(id);
+    timeEntry = await timeEntryRepository.getTimeEntry(id, req.user.id);
   } catch (error) {
     next(error);
     return;

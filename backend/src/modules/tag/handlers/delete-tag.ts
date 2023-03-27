@@ -7,7 +7,7 @@ const deleteTagHandler: RequestHandler = async (req, res, next) => {
 
   let tag;
   try {
-    tag = await tagRepository.delete(name);
+    tag = await tagRepository.delete(name, req.user.id);
   } catch (error) {
     next(error);
   }
