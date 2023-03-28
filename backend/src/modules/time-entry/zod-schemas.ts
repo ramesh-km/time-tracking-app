@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { z } from "zod";
 
 export const createTimeEntrySchema = z.object({
@@ -26,5 +25,14 @@ export const getTimeEntriesReportSchema = z.object({
   note: z.string().max(255).optional().default(""),
   sort: z.enum(["start", "end", "note", "tags"]).default("start"),
   direction: z.enum(["asc", "desc"]).default("desc"),
-  
 });
+
+export const insightsDataSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("bar-chart"),
+  }),
+  z.object({
+    type: z.literal("calendar-heatmap"),
+    year: z.coerce.number().int().min(2000).max(2100),
+  }),
+]);

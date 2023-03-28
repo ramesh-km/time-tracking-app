@@ -2,9 +2,12 @@ import dayjs from "dayjs";
 import prisma from "../../lib/prisma";
 import {
   CreateTimeEntryInput,
+  InsightsDataInput,
   TimeEntryPaginationInput,
   UpdateTimeEntryInput,
 } from "../../types/time-entry";
+import weekday from "dayjs/plugin/weekday";
+dayjs.extend(weekday);
 
 async function create(data: CreateTimeEntryInput & { userId: number }) {
   const { note, tags, userId } = data;
@@ -163,6 +166,72 @@ async function stopActiveTimeEntry(userId: number) {
   return timeEntry;
 }
 
+async function getInsightsData(insight: InsightsDataInput, userId: number) {
+  switch (insight.type) {
+    case "bar-chart": {
+      const timeEntries = await prisma.timeEntry.findMany({
+        where: {
+          userId,
+          start: {
+            gte: dayjs().weekday(-7).toDate(), // last sunday
+            lte: dayjs().endOf("week").toDate(),
+          },
+        },
+        select: {
+          start: true,
+          end: true,
+        },
+      });
+
+      const data = timeEntries.map((timeEntry) => {
+        const start = dayjs(timeEntry.start);
+        const end = dayjs(timeEntry.end || new Date()); // if task is still running, use current time
+        const diff = end.diff(start, "hours");
+        return diff;
+      });
+
+      return data;
+    }
+    case "calendar-heatmap": {
+      const timeEntries = await prisma.timeEntry.findMany({
+        where: {
+          userId,
+          start: {
+            gte: dayjs().startOf("year").toDate(),
+            lte: dayjs().toDate(),
+          },
+        },
+        select: {
+          start: true,
+          end: true,
+        },
+      });
+
+      // Generate a map of dates and hours for the current year
+      const data = Array.from({ length: 365 }, (_, i) => {
+        const date = dayjs().startOf("year").add(i, "day");
+
+        let hours = 0;
+        timeEntries.forEach((timeEntry) => {
+          const start = dayjs(timeEntry.start);
+          const end = dayjs(timeEntry.end);
+          if (date.isSame(start, "day")) {
+            hours += end.diff(start, "hours");
+          }
+        });
+
+        return [date.format("YYYY-MM-DD"), hours || 0];
+      });
+
+      return data;
+    }
+    default:
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-case-declarations
+      const _exhaustiveCheck: never = insight;
+      break;
+  }
+}
+
 const timeEntryRepository = {
   create,
   getTimeEntry,
@@ -172,6 +241,7 @@ const timeEntryRepository = {
   deleteTimeEntry,
   stop,
   stopActiveTimeEntry,
+  getInsightsData,
 };
 
 export default timeEntryRepository;

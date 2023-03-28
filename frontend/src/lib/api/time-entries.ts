@@ -1,6 +1,8 @@
 import { Tag } from "../../types/tags";
 import {
   CreateTimeEntryInput,
+  InsightDataMap,
+  InsightParams,
   ReportsData,
   TimeEntry,
   UpdateTimeEntryInput,
@@ -45,5 +47,18 @@ export async function getTimeEntry(id: number) {
 
 export async function stopTimeEntry(id: number) {
   const res = await http.put<TimeEntry>(`/time-entry/stop/${id}`);
+  return res.data;
+}
+
+export async function getInsightsData<T extends InsightParams["type"]>(
+  type: T,
+  params?: Omit<InsightParams, "type">
+) {
+  const res = await http.get<InsightDataMap[T]>(`/time-entry/insights`, {
+    params: {
+      type,
+      ...params,
+    },
+  });
   return res.data;
 }

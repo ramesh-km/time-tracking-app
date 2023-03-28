@@ -1,23 +1,35 @@
-import { Box, Container, Divider, Stack, Text } from "@mantine/core";
-import React from "react";
-import { init, number, time } from "echarts";
+import { Container, Divider, Stack, Text } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
+import { init } from "echarts";
+import React from "react";
+import { useLoaderData } from "react-router-dom";
+import { getInsightsData } from "../../lib/api/time-entries";
+import queryClient from "../../lib/query-client";
+import { queryKeys } from "../../lib/react-query-keys";
 
-const getVirtualData = () => {
-  const date = number.parseDate("2016-01-01");
-  const end = number.parseDate("2017-01-01");
-  const dayTime = 3600 * 24 * 1000;
-  const data = [];
-  for (let t = date; t < end; t += dayTime) {
-    data.push([
-      time.format(t, "yyyy-MM-dd", true),
-      Math.floor(Math.random() * 10000),
-    ]);
-  }
+export async function loader() {
+  const data = await Promise.all([
+    queryClient.ensureQueryData({
+      queryKey: [queryKeys.getInsightsData, { type: "bar-chart" }],
+      queryFn: () => getInsightsData("bar-chart"),
+    }),
+    queryClient.ensureQueryData({
+      queryKey: [queryKeys.getInsightsData, { type: "calendar-heatmap" }],
+      queryFn: () =>
+        getInsightsData("calendar-heatmap", {
+          year: new Date().getFullYear(),
+        }),
+    }),
+  ]);
+
   return data;
-};
+}
 
 export function Component() {
+  const [barChartData, calendarHeatmapData] = useLoaderData() as Awaited<
+    ReturnType<typeof loader>
+  >;
+
   const barChartRef = React.useRef<HTMLDivElement>(null);
   const heatmapChartRef = React.useRef<HTMLDivElement>(null);
   useDocumentTitle("Insights");
@@ -34,17 +46,14 @@ export function Component() {
       },
       xAxis: {
         type: "category",
-        data: new Array(14).fill(0).map((_, i) => `Day ${i + 1}`),
+        data: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
       },
       yAxis: {
         type: "value",
       },
       series: [
         {
-          data: [
-            820, 932, 901, 934, 1290, 1330, 1320, 1200, 1100, 900, 800, 700,
-            600, 500,
-          ],
+          data: barChartData,
           type: "bar",
         },
       ],
@@ -56,12 +65,12 @@ export function Component() {
       title: {
         top: 30,
         left: "center",
-        text: "Daily Step Count",
+        text: `Calendar Heatmap of Time Entries for ${new Date().getFullYear()}`,
       },
       tooltip: {},
       visualMap: {
         min: 0,
-        max: 10000,
+        max: 24,
         type: "piecewise",
         orient: "horizontal",
         left: "center",
@@ -72,7 +81,7 @@ export function Component() {
         left: 30,
         right: 30,
         cellSize: ["auto", 13],
-        range: "2016",
+        range: "2023",
         itemStyle: {
           borderWidth: 0.5,
         },
@@ -81,7 +90,7 @@ export function Component() {
       series: {
         type: "heatmap",
         coordinateSystem: "calendar",
-        data: getVirtualData(),
+        data: calendarHeatmapData
       },
     });
 
@@ -95,15 +104,14 @@ export function Component() {
       <Stack w={"100%"} align={"center"} spacing={10}>
         <Container h={300} w={"100%"} ref={heatmapChartRef} />
         <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+          Calendar heatmap of time entries. The color of the cell represents the
+          number of time entries for that day.
         </Text>
       </Stack>
       <Divider />
       <Stack w={"100%"} align={"center"}>
         <Container h={300} w={"100%"} ref={barChartRef} />
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-        </Text>
+        <Text>Last week time entries</Text>
       </Stack>
     </Stack>
   );

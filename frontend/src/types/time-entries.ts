@@ -24,4 +24,18 @@ export interface ReportsData {
   total: number;
 }
 
+export type InsightParams =
+  | {
+      type: "bar-chart";
+    }
+  | {
+      type: "calendar-heatmap";
+      year: number;
+    };
+
+export type InsightDataMap = {
+  "bar-chart": number[];
+  "calendar-heatmap": [string, number][];
+};
+
 export type UpdateTimeEntryInput = z.infer<typeof updateTimeEntrySchema>;
