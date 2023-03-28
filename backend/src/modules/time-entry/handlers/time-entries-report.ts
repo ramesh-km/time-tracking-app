@@ -5,6 +5,7 @@ import { stringify } from "csv";
 import * as fs from "fs";
 import path from "path";
 import { tmpdir } from "os";
+import { TimeEntry, Tag } from "@prisma/client";
 
 const getTimeEntriesReportHandler: RequestHandler = async (req, res, next) => {
   const query = getTimeEntriesReportSchema.parse(req.query);

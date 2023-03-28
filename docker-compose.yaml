@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  api:
+    build: .
+    environment:
+      - PORT=7002
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/postgres
+      - SENDGRID_API_TOKEN="SendGrid API Key"
+      - FRONTEND_URL=https://time-tracking-app-frontend.vercel.app/
+      - ISSUE_TRACKER_EMAIL="Issue Tracker Email"
+
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - "7002:7002"

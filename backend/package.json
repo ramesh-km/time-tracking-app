@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "build dist/index.js",
+    "migrate": "prisma migrate deploy",
+    "start": "node build/index.js",
     "debug": "tsx --inspect src/index.ts"
   },
   "keywords": [],
