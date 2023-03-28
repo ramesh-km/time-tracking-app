@@ -39,3 +39,11 @@ export type InsightDataMap = {
 };
 
 export type UpdateTimeEntryInput = z.infer<typeof updateTimeEntrySchema>;
+
+export interface TimeEntryReportFilters {
+  start?: string;
+  end?: string;
+  tags?: string[];
+  page?: number;
+  size?: number;
+}

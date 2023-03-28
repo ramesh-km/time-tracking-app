@@ -5,6 +5,7 @@ import {
   InsightParams,
   ReportsData,
   TimeEntry,
+  TimeEntryReportFilters,
   UpdateTimeEntryInput,
 } from "../../types/time-entries";
 import http from "../http";
@@ -24,9 +25,31 @@ export async function updateTimeEntry(
   return res.data;
 }
 
-export async function getTimeEntriesReport() {
-  const res = await http.get<ReportsData>("/time-entry/report");
-  return res.data;
+export async function getTimeEntriesReport(
+  filters: TimeEntryReportFilters,
+  download = false
+) {
+  const headers = download
+    ? { "Content-Type": "text/csv", Accept: "text/csv" }
+    : {};
+  const res = await http.get<ReportsData>("/time-entry/report", {
+    headers,
+  });
+
+  if (!download) {
+    return res.data;
+  }
+
+  const fileName = `time-entries-${new Date().toISOString()}.csv`;
+
+  const blob = new Blob([String(res.data)], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.setAttribute("download", fileName);
+  link.click();
+  window.URL.revokeObjectURL(url);
 }
 
 export async function getAllCurrentWeekEntries() {

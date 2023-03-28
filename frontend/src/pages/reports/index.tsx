@@ -59,23 +59,32 @@ export function Component() {
         size,
       },
     ],
-    queryFn: getTimeEntriesReport,
+    queryFn: () => getTimeEntriesReport({ page, size }),
     initialData,
   });
   const totalPages = Math.ceil(query.data.total / size);
 
+  const handleExport = () => {
+    getTimeEntriesReport({
+      page,
+      size,
+      start: dayjs(dates[0]).format("YYYY-MM-DD"),
+      end: dayjs(dates[1]).format("YYYY-MM-DD"),
+    }, true);
+  };
+
   return (
     <Stack spacing="xl">
-      <Group
-        align={"flex-end"}
-      >
+      <Group align={"flex-end"}>
         <DatePickerInput
           label="Report For Date Range"
           type="range"
           value={dates}
           onChange={setDates}
         />
-        <Button leftIcon={<IconFileExport />}>Export</Button>
+        <Button onClick={handleExport} leftIcon={<IconFileExport />}>
+          Export
+        </Button>
       </Group>
       <Table>
         <ReportsTableHeader />
