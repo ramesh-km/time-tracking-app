@@ -1,17 +1,7 @@
-import {
-  ActionIcon,
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Group,
-  Pagination,
-  Stack,
-  Table,
-} from "@mantine/core";
-import { DateInput, DatePickerInput, DatesRangeValue } from "@mantine/dates";
+import { Button, Group, Pagination, Stack, Table } from "@mantine/core";
+import { DatePickerInput, DatesRangeValue } from "@mantine/dates";
 import { useDocumentTitle } from "@mantine/hooks";
-import { IconEdit, IconFileExport } from "@tabler/icons-react";
+import { IconFileExport } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -37,10 +27,11 @@ export async function loader() {
         size: 10,
       },
     ],
-    queryFn: getTimeEntriesReport,
+    queryFn: () => getTimeEntriesReport({ page: 0, size: 10 }),
   };
 
-  return await queryClient.ensureQueryData(reportsQuery);
+  const data = await queryClient.ensureQueryData(reportsQuery);
+  return data;
 }
 
 export function Component() {
@@ -65,12 +56,15 @@ export function Component() {
   const totalPages = Math.ceil(query.data.total / size);
 
   const handleExport = () => {
-    getTimeEntriesReport({
-      page,
-      size,
-      start: dayjs(dates[0]).format("YYYY-MM-DD"),
-      end: dayjs(dates[1]).format("YYYY-MM-DD"),
-    }, true);
+    getTimeEntriesReport(
+      {
+        page,
+        size,
+        start: dayjs(dates[0]).format("YYYY-MM-DD"),
+        end: dayjs(dates[1]).format("YYYY-MM-DD"),
+      },
+      true
+    );
   };
 
   return (

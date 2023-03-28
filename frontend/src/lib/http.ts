@@ -1,5 +1,4 @@
-import { notifications } from "@mantine/notifications";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 import {
   deleteUserFromLocalStorage,
   retriveUserFromLocalStorage,

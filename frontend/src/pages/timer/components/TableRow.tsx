@@ -1,13 +1,4 @@
-import {
-  Badge,
-  Group,
-  ActionIcon,
-  Loader,
-  Code,
-  Kbd,
-  Text,
-  Center,
-} from "@mantine/core";
+import { Badge, Group, ActionIcon, Kbd, Text } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconPlayerPause, IconEdit, IconTrash } from "@tabler/icons-react";
 import dayjs from "dayjs";
@@ -16,8 +7,6 @@ import { openUpdateTimeEntryModal } from "../../../components/modals/UpdateTimeE
 import useDeleteTimeEntry from "../../../hooks/useDeleteTimeEntry";
 import useStopTimeEntry from "../../../hooks/useStopTimeEntry";
 import { formatDuration, getDuration } from "../../../lib/dates";
-import queryClient from "../../../lib/query-client";
-import { queryKeys } from "../../../lib/react-query-keys";
 import { TimeEntry } from "../../../types/time-entries";
 
 type TableRowProps = {

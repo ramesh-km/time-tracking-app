@@ -1,6 +1,4 @@
-type TableHeaderProps = {};
-
-function TableHeader(props: TableHeaderProps) {
+function TableHeader() {
   const styles = {
     width: "10%",
   };

@@ -20,7 +20,7 @@ function SelectPageSize(props: SelectPageSizeProps) {
       unselectable="on"
       label="Page Size"
       sx={{
-        width: '100px'
+        width: "100px",
       }}
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       onChange={(value) => props.onChange(parseInt(value!, 10))}

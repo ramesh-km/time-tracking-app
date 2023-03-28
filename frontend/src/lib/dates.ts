@@ -11,5 +11,5 @@ export function getDuration(start: string | Date, end: string | Date) {
 }
 
 export function formatDuration(duration: number) {
-  return dayjs.duration(duration, 'milliseconds').format("HH:mm:ss");
+  return dayjs.duration(duration, "milliseconds").format("HH:mm:ss");
 }

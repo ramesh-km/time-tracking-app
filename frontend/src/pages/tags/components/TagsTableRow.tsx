@@ -1,4 +1,4 @@
-import { Tag, TagWithCount } from "../../../types/tags";
+import { TagWithCount } from "../../../types/tags";
 import TagActions from "./TagActions";
 
 type TagsTableRowProps = {

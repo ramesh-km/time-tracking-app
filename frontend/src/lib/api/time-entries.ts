@@ -1,4 +1,3 @@
-import { Tag } from "../../types/tags";
 import {
   CreateTimeEntryInput,
   InsightDataMap,
@@ -25,6 +24,13 @@ export async function updateTimeEntry(
   return res.data;
 }
 
+export async function getTimeEntriesReport(
+  filters: TimeEntryReportFilters
+): Promise<ReportsData>;
+export async function getTimeEntriesReport(
+  filters: TimeEntryReportFilters,
+  download: true
+): Promise<undefined>;
 export async function getTimeEntriesReport(
   filters: TimeEntryReportFilters,
   download = false

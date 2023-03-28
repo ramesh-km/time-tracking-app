@@ -5,7 +5,7 @@ import { toTitleCase } from "../../../lib/strings";
 
 function AppHeader() {
   const location = useLocation();
-  console.log("🚀 ~ file: AppHeader.tsx:8 ~ AppHeader ~ location:", location)
+  console.log("🚀 ~ file: AppHeader.tsx:8 ~ AppHeader ~ location:", location);
   return (
     <Header withBorder={false} height="3rem">
       <Group spacing={4} p={"sm"} align={"center"} h={"100%"}>

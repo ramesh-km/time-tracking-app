@@ -1,4 +1,4 @@
-import { Alert, Stack, Table, Text } from "@mantine/core";
+import { Stack, Table, Text } from "@mantine/core";
 import { toTitleCase } from "../../../lib/strings";
 import { TimeEntry } from "../../../types/time-entries";
 import TableHeader from "./TableHeader";

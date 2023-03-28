@@ -1,6 +1,5 @@
 import { Button, Grid, Stack, TextInput } from "@mantine/core";
 import { useDocumentTitle } from "@mantine/hooks";
-import { notifications } from "@mantine/notifications";
 import { IconNote, IconPlayerPause, IconPlayerPlay } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -8,7 +7,6 @@ import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import useDeleteTimeEntry from "../../hooks/useDeleteTimeEntry";
 import { getAllTags } from "../../lib/api/tags";
 import {
   createTimeEntry,
@@ -89,7 +87,7 @@ export function Component() {
   const handleTimerStart = () => {
     mutation.mutate({
       note,
-      tags
+      tags,
     });
   };
 

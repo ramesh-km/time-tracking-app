@@ -90,7 +90,7 @@ export function Component() {
       series: {
         type: "heatmap",
         coordinateSystem: "calendar",
-        data: calendarHeatmapData
+        data: calendarHeatmapData,
       },
     });
 

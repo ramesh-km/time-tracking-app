@@ -1,21 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  Anchor,
-  Box,
   Button,
   Container,
   Group,
   PasswordInput,
-  Radio,
   Stack,
-  Text,
   TextInput,
-  Title,
 } from "@mantine/core";
-import { Link } from "react-router-dom";
-import { registerSchema, updateUserDataSchema } from "../../lib/zod-schemas";
-import { RegisterFormData, UpdateUserData } from "../../types/users";
+import { updateUserDataSchema } from "../../lib/zod-schemas";
+import { UpdateUserData } from "../../types/users";
 import { useDocumentTitle } from "@mantine/hooks";
 import useAuth from "../../hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";

@@ -3,7 +3,7 @@ import { IconEdit } from "@tabler/icons-react";
 import dayjs from "dayjs";
 import { openUpdateTimeEntryModal } from "../../../components/modals/UpdateTimeEntry";
 import { formatDuration, getDuration } from "../../../lib/dates";
-import { ReportsDataRow, TimeEntry } from "../../../types/time-entries";
+import { ReportsDataRow } from "../../../types/time-entries";
 
 type ReportsTableRowProps = {
   timeEntry: ReportsDataRow;

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { useState } from "react";
 import {
   createStyles,
   Navbar,
@@ -8,11 +7,8 @@ import {
   rem,
   useMantineTheme,
   Text,
-  ActionIcon,
   UnstyledButton,
   useMantineColorScheme,
-  Code,
-  Kbd,
 } from "@mantine/core";
 import {
   IconSettings,
@@ -26,7 +22,6 @@ import {
 } from "@tabler/icons-react";
 import { FaStopwatch } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
-import { useDocumentTitle } from "@mantine/hooks";
 import useAuth from "../../../hooks/useAuth";
 
 const useStyles = createStyles((theme) => ({
@@ -125,7 +120,7 @@ const data = [
 ];
 
 function AppNavbar() {
-  const { logout} = useAuth();
+  const { logout } = useAuth();
   const { classes, cx } = useStyles();
 
   const links = data.map((item) => (

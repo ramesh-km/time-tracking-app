@@ -1,9 +1,4 @@
 import { useLocalStorage } from "@mantine/hooks";
-import {
-  completeNavigationProgress,
-  startNavigationProgress,
-} from "@mantine/nprogress";
-import { useEffect, useState } from "react";
 import { storageKeys } from "../lib/storage-keys";
 import { AuthContextType, User } from "../types/users";
 import { AuthContext } from "./AuthContext";

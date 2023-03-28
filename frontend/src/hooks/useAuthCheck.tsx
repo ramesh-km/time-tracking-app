@@ -16,7 +16,6 @@ function useAuthCheck() {
     } else if (!user && !publicRoutes.includes(location.pathname)) {
       navigate("/login");
     }
-    
   }, [user]);
 }
 
